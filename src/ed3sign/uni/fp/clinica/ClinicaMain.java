@@ -50,7 +50,7 @@ public class ClinicaMain {
 		ElencoUtenti utenti = null;
 		ElencoMedici medici = null;
 		
-		// Caricamento File, se gi� esistente
+		// Caricamento File, se già esistente
 		if(f_users.exists()){
 			try{
 				utenti = (ElencoUtenti) MyFile.loadObject(f_users, UTENTI_FILENAME);

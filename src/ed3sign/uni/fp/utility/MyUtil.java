@@ -1,9 +1,11 @@
 package ed3sign.uni.fp.utility;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
@@ -179,6 +181,7 @@ public class MyUtil {
 		String time = dateFormat.format(date).toString();
 		return time;
 	}
+	
 
 	/* Check Codice Fiscale */
 	public static boolean checkCodFisc(String cod) {
@@ -230,8 +233,21 @@ public class MyUtil {
 	
 	/* Time Format */
 	public static String timeHourFormat(Date date){
-		SimpleDateFormat hf = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat hf = new SimpleDateFormat("HH:mm");
 		return hf.format(date);
+	}
+	
+	
+	
+	/* Get Hours Based on Index */
+	public static Date getHours(Calendar cal, int row, int col){
+		cal.set(Calendar.HOUR_OF_DAY, 8);
+	    cal.set(Calendar.MINUTE, 0);
+	    cal.set(Calendar.SECOND, 0);
+		for(int i=0; i<=row; i++){
+			cal.add(Calendar.MINUTE, 30);
+		}
+		return cal.getTime();
 	}
 	
 
