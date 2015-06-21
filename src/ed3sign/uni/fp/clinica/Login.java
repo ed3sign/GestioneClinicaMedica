@@ -35,7 +35,7 @@ public class Login extends JFrame {
 	private JPanel contentPane;
 	private JPasswordField tf_pass;
 	private JButton btnLogin;
-	File f_users = new File(ClinicaMain.UTENTI_FILENAME);
+	File f_medici = new File(ClinicaMain.MEDICI_FILENAME);
 	private JTextField tf_utente;
 
 	/**
@@ -105,11 +105,11 @@ public class Login extends JFrame {
 					String pass = new String(tf_pass.getPassword());
 
 					// Ottieni Lista Utenti
-					ElencoUtenti utenti = null;
-					utenti = (ElencoUtenti) MyFile.loadObject(f_users, ClinicaMain.UTENTI_FILENAME);
+					ElencoMedici medici = null;
+					medici = (ElencoMedici) MyFile.loadObject(f_medici, ClinicaMain.MEDICI_FILENAME);
 					
 					// Login Check
-					checkLogin(utenti.elencoUtenti, utente, pass);
+					checkLogin(medici.elencoMedici, utente, pass);
 				}
 			}
 		});
@@ -136,16 +136,16 @@ public class Login extends JFrame {
 	 * @param user nome utente inserito
 	 * @param pass password inserita
 	 */
-	public void checkLogin(ArrayList<Utente> list, String user, String pass) {
+	public void checkLogin(ArrayList<Medico> list, String user, String pass) {
 		boolean found = false;
 		
 		// Testing
-		for(Utente u : list){
-			if(u.getUser().equals(user) && u.getPass().equals(pass)){
+		for(Medico m : list){
+			if(m.getUser().equals(user) && m.getPass().equals(pass)){
 				found = true;
 				ClinicaMain.loggedin.put(true, user);
 				InterfaceHelpers.closeParent(contentPane);
-				JOptionPane.showMessageDialog(contentPane, "Benvenuto, "+u.getNome()+"!", "Login Confermato", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(contentPane, "Benvenuto, "+m.getNome()+"!", "Login Confermato", JOptionPane.INFORMATION_MESSAGE);
 				ClinicaMain.checkMenuLogin();
 			}
 		}

@@ -50,7 +50,7 @@ public class ClinicaMain {
 		ElencoUtenti utenti = null;
 		ElencoMedici medici = null;
 		
-		// Caricamento File, se già  esistente
+		// Caricamento File, se giï¿½ esistente
 		if(f_users.exists()){
 			try{
 				utenti = (ElencoUtenti) MyFile.loadObject(f_users, UTENTI_FILENAME);
@@ -187,6 +187,9 @@ public class ClinicaMain {
 		
 		menu_orari = new JMenu("Orari & Visite");
 		menuBar.add(menu_orari);
+		
+		JMenuItem mntmImpostaOrariDi = new JMenuItem("Imposta Orari di Visita");
+		menu_orari.add(mntmImpostaOrariDi);
 		
 		JMenu menu_help = new JMenu("Help");
 		menuBar.add(menu_help);

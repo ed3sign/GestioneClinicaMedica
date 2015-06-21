@@ -62,6 +62,7 @@ public class VisualizzaUtenti extends JFrame {
 	protected JTextField tf_luogo;
 	protected JFormattedTextField tf_telefono;
 	protected JSplitPane splitPane;
+	protected int selected_index;
 	File f_users = new File(ClinicaMain.UTENTI_FILENAME);
 	JTable table;
 
@@ -234,30 +235,27 @@ public class VisualizzaUtenti extends JFrame {
 		JButton btnModifica = new JButton("Modifica");
 		btnModifica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Ottieni Lista Utenti
-				ElencoUtenti utenti = null;
-				utenti = (ElencoUtenti) MyFile.loadObject(f_users, ClinicaMain.UTENTI_FILENAME);
-		
-				int selected_index =  (int) ((table.getValueAt(table.getSelectedRow(), 0)));
-				selected_index--;
-				System.out.println(selected_index);
-				utenti.elencoUtenti.get(selected_index).setNome(tf_nome.getText());
-				utenti.elencoUtenti.get(selected_index).setCognome(tf_cognome.getText());
-				MyUtil.dateFormatter(dateChooser.getDate());
-				utenti.elencoUtenti.get(selected_index).setDataN(dateChooser.getDate());
-				
-				utenti.elencoUtenti.get(selected_index).setLuogoNascita(tf_luogo.getText());
-				utenti.elencoUtenti.get(selected_index).setTelefono(tf_telefono.getText());
-				
-				// Salvataggio Modifica
-				MyFile.saveObject(f_users, utenti, ClinicaMain.UTENTI_FILENAME);
-				
-				// Refresh Tabella
-				table.setValueAt(tf_nome.getText(), selected_index , 1);
-				table.setValueAt(tf_cognome.getText(), selected_index , 2);
-				table.setValueAt(MyUtil.dateFormatter(dateChooser.getDate()), selected_index, 3);
-				table.setValueAt(tf_luogo.getText(), selected_index, 4);
-				table.setValueAt(tf_telefono.getText(), selected_index , 5);
+				if(selected_index >= 0){
+					// Ottieni Lista Utenti
+					ElencoUtenti utenti = null;
+					utenti = (ElencoUtenti) MyFile.loadObject(f_users, ClinicaMain.UTENTI_FILENAME);
+			
+					utenti.elencoUtenti.get(selected_index).setNome(tf_nome.getText());
+					utenti.elencoUtenti.get(selected_index).setCognome(tf_cognome.getText());
+					utenti.elencoUtenti.get(selected_index).setDataN(dateChooser.getDate());
+					utenti.elencoUtenti.get(selected_index).setLuogoNascita(tf_luogo.getText());
+					utenti.elencoUtenti.get(selected_index).setTelefono(tf_telefono.getText());
+					
+					// Salvataggio Modifica
+					MyFile.saveObject(f_users, utenti, ClinicaMain.UTENTI_FILENAME);
+					
+					// Refresh Tabella
+					table.setValueAt(tf_nome.getText(), selected_index , 1);
+					table.setValueAt(tf_cognome.getText(), selected_index , 2);
+					table.setValueAt(MyUtil.dateFormatter(dateChooser.getDate()), selected_index, 3);
+					table.setValueAt(tf_luogo.getText(), selected_index, 4);
+					table.setValueAt(tf_telefono.getText(), selected_index , 5);
+				}
 			}
 		});
 
@@ -341,16 +339,22 @@ public class VisualizzaUtenti extends JFrame {
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
 	        	if(table.getSelectedRowCount() > 0){
-		        	 tf_nome.setText((table.getValueAt(table.getSelectedRow(), 1).toString()));
-			         tf_cognome.setText((table.getValueAt(table.getSelectedRow(), 2).toString()));
+	        		
+	        		// Get Selected Index
+	        		selected_index =  (int) ((table.getValueAt(table.getSelectedRow(), 0)));
+					selected_index--;
+					System.out.println("Row Selected: "+selected_index);
+					
+		        	tf_nome.setText((table.getValueAt(table.getSelectedRow(), 1).toString()));
+			        tf_cognome.setText((table.getValueAt(table.getSelectedRow(), 2).toString()));
 			         
-			         // Get Date Object
-			         try {
+			        // Get Date Object
+			        try {
 						dateChooser.setDate((Date) (MyUtil.revertDateFormatter(table.getValueAt(table.getSelectedRow(), 3).toString())));
-			         } catch (ParseException e) { e.printStackTrace(); }
+			        } catch (ParseException e) { e.printStackTrace(); }
 			         
-			         tf_luogo.setText((table.getValueAt(table.getSelectedRow(), 4).toString()));
-			         tf_telefono.setText((table.getValueAt(table.getSelectedRow(), 5).toString()));
+			        tf_luogo.setText((table.getValueAt(table.getSelectedRow(), 4).toString()));
+			        tf_telefono.setText((table.getValueAt(table.getSelectedRow(), 5).toString()));
 	        	}
 	        }
 	    });
