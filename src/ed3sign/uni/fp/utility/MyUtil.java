@@ -228,5 +228,11 @@ public class MyUtil {
 		return output;
 	}
 	
+	/* Time Format */
+	public static String timeHourFormat(Date date){
+		SimpleDateFormat hf = new SimpleDateFormat("HH:mm:ss");
+		return hf.format(date);
+	}
+	
 
 }

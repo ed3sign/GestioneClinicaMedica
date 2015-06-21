@@ -348,10 +348,7 @@ public class VisualizzaMedici extends JFrame {
 			        // Selezione Competenze
 					for(Component component : tipo_panel.getComponents()) {
 					  if(component instanceof JCheckBox) {
-						  System.out.println("Swag");
 				    	for(int i=0; i<competenze.size(); i++){
-				    		System.out.println("Competenze: "+competenze.get(i));
-				    		System.out.println("Componente: "+((JCheckBox) component).getText());
 				        	if(competenze.get(i).equals(((JCheckBox) component).getText()))
 				        		((JCheckBox) component).setSelected(true);
 				        }
@@ -377,7 +374,10 @@ public class VisualizzaMedici extends JFrame {
 		});
 	}
 	
-	// Print Table
+	/**
+	 * Print Table
+	 * @param model DefaultTableModel
+	 */
 	public void printTable(DefaultTableModel model){
 		if(f_medici.exists()){
 			ElencoMedici medici = null;
@@ -400,6 +400,10 @@ public class VisualizzaMedici extends JFrame {
 		}
 	}
 	
+	/**
+	 * Remove all Rows from table
+	 * @param model table model
+	 */
 	public void removeAllRows(DefaultTableModel model){
 		int rows = model.getRowCount(); 
 		for(int i = rows - 1; i >=0; i--)

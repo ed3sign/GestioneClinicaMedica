@@ -290,7 +290,7 @@ public class VisualizzaUtenti extends JFrame {
 				dateChooser.setDate(null);
 
 				// Disabilita Pulsanti Modifica e Annulla
-				if(table.getRowCount() > 0){
+				if(table.getRowCount()== 0){
 					btnModifica.setEnabled(false);
 					btnElimina.setEnabled(false);
 				}
