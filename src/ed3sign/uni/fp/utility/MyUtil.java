@@ -1,20 +1,16 @@
 package ed3sign.uni.fp.utility;
 
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import ed3sign.uni.fp.clinica.OrariSettimanali;
 
 //Classe proposta dal professore durante le lezioni, copiata e modificata
 public class MyUtil {
@@ -241,14 +237,39 @@ public class MyUtil {
 	
 	/* Get Hours Based on Index */
 	public static Date getHours(Calendar cal, int row, int col){
-		cal.set(Calendar.HOUR_OF_DAY, 8);
+		// Set Starting Time
+		cal.set(Calendar.HOUR_OF_DAY, OrariSettimanali.STARTING_HOUR);
 	    cal.set(Calendar.MINUTE, 0);
 	    cal.set(Calendar.SECOND, 0);
-		for(int i=0; i<=row; i++){
-			cal.add(Calendar.MINUTE, 30);
-		}
+	    cal.set(Calendar.MILLISECOND, 0);
+		for(int i=0; i<=row; i++)
+			if(i!=0)
+				cal.add(Calendar.MINUTE, OrariSettimanali.TIME_SLOT_DURATION);
 		return cal.getTime();
 	}
-	
 
+	/* Get Rows based on Date */
+	public static int getHourRows(Calendar cal, Date date) {
+		// Set Starting Time
+		cal.set(Calendar.HOUR_OF_DAY, OrariSettimanali.STARTING_HOUR);
+	    cal.set(Calendar.MINUTE, 0);
+	    cal.set(Calendar.SECOND, 0);
+	    cal.set(Calendar.MILLISECOND, 0);
+	    
+	    Calendar cal1 = new GregorianCalendar();
+	    cal1.setTime(date);
+	    
+	    for(int i=0; i<=OrariSettimanali.TIME_SLOTS; i++){
+			if(i!=0)
+				cal.add(Calendar.MINUTE, OrariSettimanali.TIME_SLOT_DURATION);
+			
+			String d1 = timeHourFormat(cal.getTime());
+		    String d2 = timeHourFormat(cal1.getTime());
+			System.out.println("Ora Main: "+d1);
+			System.out.println("Ora Rif: "+d2);
+			if(d1.equals(d2))
+				return i;
+	    }
+		return 0;
+	}
 }

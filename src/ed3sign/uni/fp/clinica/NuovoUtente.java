@@ -1,59 +1,36 @@
 package ed3sign.uni.fp.clinica;
 
-import java.awt.BorderLayout;
-import java.io.Serializable;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.border.EmptyBorder;
-import javax.swing.text.JTextComponent;
-
-import java.awt.FlowLayout;
-
-import javax.swing.JLabel;
-
-import java.awt.Component;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
-
-import javax.swing.JTextField;
-
+import java.awt.GridBagLayout;
 import java.awt.Insets;
-
-import javax.swing.JFormattedTextField;
-
-import com.toedter.calendar.JDateChooser;
-
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-
-import ed3sign.uni.fp.utility.MyFile;
-import ed3sign.uni.fp.utility.InterfaceHelpers;
-import ed3sign.uni.fp.utility.MyUtil;
-
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
-import javax.swing.JPasswordField;
-
-import org.joda.time.*;
-import java.awt.Font;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
+import javax.swing.JTextField;
+
+import com.toedter.calendar.JDateChooser;
+
+import ed3sign.uni.fp.utility.InterfaceHelpers;
+import ed3sign.uni.fp.utility.MyUtil;
 
 public class NuovoUtente extends JFrame{
 
+	private static final long serialVersionUID = 1L;
 	protected JPanel contentPane;
 	protected JTextField tf_nome;
 	protected JLabel lblCognome;

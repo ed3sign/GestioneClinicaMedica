@@ -1,16 +1,13 @@
 package ed3sign.uni.fp.clinica;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
@@ -24,42 +21,37 @@ import java.awt.Color;
 
 import javax.swing.JScrollPane;
 
-import java.awt.Component;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.lang.reflect.Array;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.Map.Entry;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
-
-import org.joda.time.DateTime;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class OrariSettimanali extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JScrollPane scrollPane;
 	private JTable table;
-	private static final int TIME_SLOTS = 20;
 	private JButton btnSalva;
-	private static final int STARTING_HOUR = 8;
+	public static final int STARTING_HOUR = 8;
+	public static final int TIME_SLOT_DURATION = 30;
+	public static final int TIME_SLOTS = 20;
 	private static final String DISPONIBILE = "Disponibile";
 	protected Calendar cal = Calendar.getInstance();
-	ArrayList<Date> orariMedico = new ArrayList<Date>();
-	HashMap<ArrayList, Integer> orariSettimali = new HashMap<ArrayList, Integer>();
+	protected static final String WEEK_FILENAME = "orari_settimana.txt";
+	protected File f_orariSettimana = new File(WEEK_FILENAME);
+	protected HashMap<Integer, ArrayList<Date>> orariSettimanali;
 	
 
 	/**
@@ -127,7 +119,7 @@ public class OrariSettimanali extends JFrame {
                     	int selected_cols[] = table.getSelectedColumns();
                     	for(int i=0; i<selected_rows.length; i++){
                     		for(int j=0; j<selected_cols.length; j++)
-                    				table.setValueAt("Disponibile", selected_rows[i], selected_cols[j]);
+                    				table.setValueAt(DISPONIBILE, selected_rows[i], selected_cols[j]);
                     	}
                     }
                 }
@@ -136,8 +128,8 @@ public class OrariSettimanali extends JFrame {
 					if(table.getSelectedColumnCount() > 0){
                     	int selected_rows[] = table.getSelectedRows();
                     	int selected_cols[] = table.getSelectedColumns();
-                    	for(int i=0; i<=selected_rows.length; i++){
-                    		for(int j=0; j<=selected_cols.length; j++)
+                    	for(int i=0; i<selected_rows.length; i++){
+                    		for(int j=0; j<selected_cols.length; j++)
                     			if(table.getValueAt(selected_rows[i], selected_cols[j]) != null && table.getValueAt(selected_rows[i], selected_cols[j]).equals(DISPONIBILE))
                     				table.setValueAt("", selected_rows[i], selected_cols[j]);
                     	}
@@ -155,6 +147,7 @@ public class OrariSettimanali extends JFrame {
 		DefaultTableModel model = new DefaultTableModel(col, 0);
 		table.setModel(model);
 		printDayHours(model);
+		loadTable();
 		
 		// Table Selected Row Event
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -178,26 +171,31 @@ public class OrariSettimanali extends JFrame {
 		btnSalva = new JButton("Salva");
 		btnSalva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int selected_rows[] = table.getSelectedRows();
-            	int selected_cols[] = table.getSelectedColumns();
-            	for(int i=0; i<selected_rows.length; i++){
-            		for(int j=0; j<selected_cols.length; j++){
+         
+				for(int j=0; j<table.getColumnCount(); j++){
+					ArrayList<Date> orariMedico = new ArrayList<Date>();
+            		for(int i=0; i<table.getRowCount(); i++){
             			if(table.getValueAt(i, j) != null && table.getValueAt(i, j).equals(DISPONIBILE)){
             				Date intervallo = MyUtil.getHours(cal, i, j);
-            				System.out.println(intervallo);
             				orariMedico.add(intervallo);
             			}
-            		}	
+            		}
+            		// Inserimento Hashmap
+            		orariSettimanali.put(j, orariMedico);
             	}
+				
+				// Stampa Hashmap
+				for (Entry <Integer, ArrayList<Date>> entry : orariSettimanali.entrySet()) {
+					  Integer key = entry.getKey();
+					  ArrayList<Date> value = entry.getValue();
+					  System.out.println("Chiave: "+key+ " Contenuto: "+value);
+				}
+				
+				MyFile.saveObject(f_orariSettimana, orariSettimanali, WEEK_FILENAME);
 				JOptionPane.showMessageDialog(getParent(), "Orari Salvati!");
 			}
 		});
 		contentPane.add(btnSalva, gbc_btnSalva);
-	}
-	
-	// Print Table
-	public void printTable(DefaultTableModel model){
-			//removeAllRows(model);
 	}
 	
 	/**
@@ -214,6 +212,29 @@ public class OrariSettimanali extends JFrame {
 		}
 	}
 	
+	/**
+	 * Load Table
+	 */
+	@SuppressWarnings("unchecked")
+	public void loadTable(){
+		if(f_orariSettimana.exists()){
+			orariSettimanali = (HashMap<Integer, ArrayList<Date>>) MyFile.loadObject(f_orariSettimana, WEEK_FILENAME);
+			for (Entry <Integer, ArrayList<Date>> entry : orariSettimanali.entrySet()) {
+				ArrayList<Date> dates = entry.getValue();
+				for(int i=0; i<dates.size(); i++){
+					int col = entry.getKey();
+					int row = MyUtil.getHourRows(cal, dates.get(i));
+					System.out.println(row);
+					
+					if(!dates.isEmpty()){
+						table.setValueAt(DISPONIBILE, row, col);
+					}
+				}
+			}
+		}
+		else orariSettimanali = new HashMap<Integer, ArrayList<Date>>();
+	}
+	
 	
 	/**
 	 * Remove all Rows from table
@@ -224,5 +245,4 @@ public class OrariSettimanali extends JFrame {
 		for(int i = rows - 1; i >=0; i--)
 		   model.removeRow(i); 
 	}
-
 }

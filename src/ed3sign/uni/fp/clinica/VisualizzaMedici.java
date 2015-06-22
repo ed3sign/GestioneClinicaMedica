@@ -1,71 +1,47 @@
 package ed3sign.uni.fp.clinica;
 
+import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 
-import java.awt.GridBagLayout;
-
-import javax.swing.JLabel;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.Font;
-
-import javax.swing.JTable;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
+import com.toedter.calendar.JDateChooser;
 
 import ed3sign.uni.fp.utility.InterfaceHelpers;
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
-
-import java.awt.Insets;
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-
-import com.toedter.calendar.JDateChooser;
-
-import javax.swing.JFormattedTextField;
-import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import javax.swing.ListSelectionModel;
-
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowEvent;
-import java.awt.FlowLayout;
-
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.forms.layout.RowSpec;
-
-import java.awt.CardLayout;
-
-import net.miginfocom.swing.MigLayout;
 
 public class VisualizzaMedici extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -196,7 +172,7 @@ public class VisualizzaMedici extends JFrame {
 		JLabel lblLuogoDiNascita = new JLabel("Tipologia");
 		panel.add(lblLuogoDiNascita, "3, 9, left, center");
 				
-		JComboBox cb_tipo = new JComboBox();
+		JComboBox<String> cb_tipo = new JComboBox<String>();
 		cb_tipo.addItem("Generico");
 		cb_tipo.addItem("Specialista");
 		panel.add(cb_tipo, "5, 9, fill, center");

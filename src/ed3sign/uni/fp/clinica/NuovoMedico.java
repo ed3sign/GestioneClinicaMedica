@@ -8,11 +8,8 @@ import java.util.Date;
 import javax.swing.JLabel;
 
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.List;
 
 import javax.swing.JComboBox;
 
@@ -26,9 +23,9 @@ import ed3sign.uni.fp.utility.InterfaceHelpers;
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
 
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.GroupLayout;
@@ -64,7 +61,7 @@ public class NuovoMedico extends NuovoUtente {
 		gbc_lblTipologia.gridy = 10;
 		getContentPane().add(lblTipologia, gbc_lblTipologia);
 		
-		JComboBox cb_tipologia = new JComboBox();
+		JComboBox<String> cb_tipologia = new JComboBox<String>();
 		cb_tipologia.addItem("Generico");
 		cb_tipologia.addItem("Specialista");
 		GridBagConstraints gbc_cb_tipologia = new GridBagConstraints();
@@ -209,13 +206,13 @@ public class NuovoMedico extends NuovoUtente {
 					else
 						medici = new ElencoMedici();
 						
-					// Controllo Utente già  esistente
+					// Controllo Utente giï¿½ esistente
 					boolean existing = false;
 					if(medici.elencoMedici.size()>0){
 						for(Medico m : medici.elencoMedici){
 							if(user.equals(m.getUser())){
-								System.out.println("Medico già esistente");
-								JOptionPane.showMessageDialog(contentPane, "Medico già  presente nei nostri archivi!", "Errore", JOptionPane.WARNING_MESSAGE);
+								System.out.println("Medico giï¿½esistente");
+								JOptionPane.showMessageDialog(contentPane, "Medico giï¿½ presente nei nostri archivi!", "Errore", JOptionPane.WARNING_MESSAGE);
 							}
 						}
 					}

@@ -3,14 +3,12 @@ package ed3sign.uni.fp.clinica;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
-import java.awt.Window;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import ed3sign.uni.fp.utility.MyFile;
 
@@ -19,8 +17,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowEvent;
 
 public class ClinicaMain {
 	
