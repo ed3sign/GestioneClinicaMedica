@@ -191,6 +191,12 @@ public class MyUtil {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		return dateFormat.format(date);
 	}
+	
+	/* Format Days */
+	public static String dayFormatter(Date date){
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy (EEE)");
+		return dateFormat.format(date);
+	}
 
 	/* Reverse Format Date */
 	public static Date revertDateFormatter(String d) throws ParseException{
@@ -233,8 +239,6 @@ public class MyUtil {
 		return hf.format(date);
 	}
 	
-	
-	
 	/* Get Hours Based on Index */
 	public static Date getHours(Calendar cal, int row, int col){
 		// Set Starting Time
@@ -265,8 +269,6 @@ public class MyUtil {
 			
 			String d1 = timeHourFormat(cal.getTime());
 		    String d2 = timeHourFormat(cal1.getTime());
-			System.out.println("Ora Main: "+d1);
-			System.out.println("Ora Rif: "+d2);
 			if(d1.equals(d2))
 				return i;
 	    }

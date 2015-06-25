@@ -26,6 +26,7 @@ public class ClinicaMain {
 	final static String SUCCESS_LOAD = "Caricamento Avvenuto con successo!";
 	final static String MSG_NO_FILE = "Nessun file trovato.";
 	final static String CAST_ERROR = "Errore di casting!";
+	protected static final int WORKING_DAYS = 6;
 	protected static HashMap<Boolean, Medico> loggedin = new HashMap<Boolean, Medico >();
 	
 	private static JMenu mn_visualizza = null;
@@ -47,7 +48,7 @@ public class ClinicaMain {
 		ElencoUtenti utenti = null;
 		ElencoMedici medici = null;
 		
-		// Caricamento File, se già  esistente
+		// Caricamento File, se giï¿½ esistente
 		if(f_users.exists()){
 			try{
 				utenti = (ElencoUtenti) MyFile.loadObject(f_users, UTENTI_FILENAME);

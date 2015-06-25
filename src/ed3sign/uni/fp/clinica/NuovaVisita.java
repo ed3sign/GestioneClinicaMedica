@@ -6,10 +6,15 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -26,17 +31,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import com.toedter.calendar.JDateChooser;
 
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class NuovaVisita extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -108,7 +110,25 @@ public class NuovaVisita extends JFrame {
 		gbc_dateChooser.gridy = 3;
 		contentPane.add(dateChooser, gbc_dateChooser);
 		
+		dateChooser.setDate(cal.getTime());
+		
+		// Filter Button
 		JButton btnNewButton = new JButton("Filtra");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadTable();
+				
+				// Header Refresh
+				JTableHeader th = table.getTableHeader();
+				TableColumnModel tcm = th.getColumnModel();
+				for(int i=1; i<ClinicaMain.WORKING_DAYS; i++){
+					Object days[] = getCurrentWeek(dateChooser);
+					TableColumn tc = tcm.getColumn(i);
+					tc.setHeaderValue(days[i]);
+				}
+				th.repaint();
+			}
+		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.gridheight = 2;
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
@@ -128,7 +148,6 @@ public class NuovaVisita extends JFrame {
 		cb_medico.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				if(table != null){
-					clearRowContent(table);
 					loadTable();
 				}
 			}
@@ -160,12 +179,6 @@ public class NuovaVisita extends JFrame {
 		contentPane.add(scrollPane, gbc_scrollPane);
 		
 		table = new JTable();
-		table.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				
-			}
-		});
 		table.setRowSelectionAllowed(false);
 		table.setCellSelectionEnabled(true);
 		scrollPane.setViewportView(table);
@@ -173,14 +186,39 @@ public class NuovaVisita extends JFrame {
 		table.setCellSelectionEnabled(true);
 		table.setCellEditor(null);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		// Header Tabella
-		String col[] = {"","Lun","Mar","Mer", "Gio", "Ven"};
-		model = new DefaultTableModel(col, 0);
+				
+		model = new DefaultTableModel(getCurrentWeek(dateChooser), 0);
 		table.setModel(model);
+		
+		JButton btnPrenota = new JButton("Prenota");
+		btnPrenota.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+				int col = table.getSelectedColumn();
+				
+				// Riga Selezionata
+				if(row == -1)
+					JOptionPane.showMessageDialog(contentPane, "Nessun orario selezionato!", "Errore", JOptionPane.WARNING_MESSAGE);
+				else if(!table.getValueAt(row, col).equals(OrariSettimanali.DISPONIBILE))
+					JOptionPane.showMessageDialog(contentPane, "Medico non disponibile per l'orario selezionato!", "Errore", JOptionPane.WARNING_MESSAGE);
+				else{
+					Date giorno_visita = (Date) (table.getTableHeader().getColumnModel().getColumn(col).getHeaderValue());
+					Date orario_visita = MyUtil.getHours(cal, row, col);
+					//Visita newVisita = new Visita();
+				}
+			}
+		});
+		GridBagConstraints gbc_btnPrenota = new GridBagConstraints();
+		gbc_btnPrenota.anchor = GridBagConstraints.EAST;
+		gbc_btnPrenota.insets = new Insets(0, 0, 0, 5);
+		gbc_btnPrenota.gridx = 3;
+		gbc_btnPrenota.gridy = 7;
+		contentPane.add(btnPrenota, gbc_btnPrenota);
+				
+		// Load Table Data
 		printDayHours(model);
 		loadTable();
-		
+		 
 		// Table Selected Row Event
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
@@ -197,10 +235,11 @@ public class NuovaVisita extends JFrame {
 	}
 	
 	/**
-	 * Print Week Days
+	 * Print Day Hours
 	 * @param model table model
 	 */
 	public void printDayHours(DefaultTableModel model){
+	    // Stampa Orari Settimali
 		for(int i=0; i<=OrariSettimanali.TIME_SLOTS; i++){
 			String starting_time = MyUtil.timeHourFormat(cal.getTime());
 			cal.add(Calendar.MINUTE, 30);
@@ -211,16 +250,33 @@ public class NuovaVisita extends JFrame {
 	}
 	
 	/**
+	 * 
+	 */
+	// Header Tabella Settimana Corrente
+	public Object[] getCurrentWeek(JDateChooser date){
+		Calendar now = date.getCalendar();
+		Object[] days = new String[ClinicaMain.WORKING_DAYS];
+	    int delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; // Week start on Monday
+	    now.add(Calendar.DAY_OF_MONTH, delta);
+	    days[0] = "";
+	    for (int i = 1; i < days.length; i++){
+	        days[i] = MyUtil.dayFormatter(now.getTime());
+	        now.add(Calendar.DAY_OF_MONTH, 1);
+	    }
+	    return days;
+	}
+	
+	/**
 	 * Load Table
 	 */
 	public void loadTable(){
+		clearRowContent(table);
 		
 		// Accesso Richiesto
 		if(ClinicaMain.loggedin.isEmpty()){
 			JOptionPane.showMessageDialog(contentPane, "Effettuare il login prima di proseguire!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
 			System.exit(0);
 		}
-		
 		
 		else if(f_medici.exists()){
 			// Medico Selezionato
@@ -260,7 +316,7 @@ public class NuovaVisita extends JFrame {
 		int rows = table.getRowCount();
 		int cols = table.getColumnCount();
 		System.out.println(rows + cols);
-		for(int i = 0; i<rows; i++)
+		for(int i = 1; i<rows; i++)
 			for(int j=1; j<cols; j++)
 				table.setValueAt("", i, j);
 	}

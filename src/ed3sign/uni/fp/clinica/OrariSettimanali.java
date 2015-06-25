@@ -171,7 +171,6 @@ public class OrariSettimanali extends JFrame {
 		btnSalva = new JButton("Salva");
 		btnSalva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-         
 				for(int j=0; j<table.getColumnCount(); j++){
 					ArrayList<Date> orariMedico = new ArrayList<Date>();
             		for(int i=0; i<table.getRowCount(); i++){
