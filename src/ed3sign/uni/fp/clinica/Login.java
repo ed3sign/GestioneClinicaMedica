@@ -64,12 +64,13 @@ public class Login extends JFrame {
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 10, 0, 173, 0, 0};
 		gbl_contentPane.rowHeights = new int[]{0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblUtente = new JLabel("Nome Utente");
 		GridBagConstraints gbc_lblUtente = new GridBagConstraints();
+		gbc_lblUtente.anchor = GridBagConstraints.WEST;
 		gbc_lblUtente.insets = new Insets(0, 0, 5, 5);
 		gbc_lblUtente.gridx = 1;
 		gbc_lblUtente.gridy = 4;
@@ -86,6 +87,7 @@ public class Login extends JFrame {
 		
 		JLabel lblPassword = new JLabel("Password");
 		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
+		gbc_lblPassword.anchor = GridBagConstraints.WEST;
 		gbc_lblPassword.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPassword.gridx = 1;
 		gbc_lblPassword.gridy = 6;
@@ -103,11 +105,15 @@ public class Login extends JFrame {
 					String pass = new String(tf_pass.getPassword());
 
 					// Ottieni Lista Utenti
-					ElencoMedici medici = null;
-					medici = (ElencoMedici) MyFile.loadObject(f_medici, ClinicaMain.MEDICI_FILENAME);
+					if(f_medici.exists()){
+						ElencoMedici medici = null;
+						medici = (ElencoMedici) MyFile.loadObject(f_medici, ClinicaMain.MEDICI_FILENAME);
 					
-					// Login Check
-					checkLogin(medici.elencoMedici, utente, pass);
+						// Login Check
+						checkLogin(medici.elencoMedici, utente, pass);
+					}
+					else
+						JOptionPane.showMessageDialog(contentPane, "Nessun utente presente nei nostri archivi!", "Errore", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -141,7 +147,7 @@ public class Login extends JFrame {
 		for(Medico m : list){
 			if(m.getUser().equals(user) && m.getPass().equals(pass)){
 				found = true;
-				ClinicaMain.loggedin.put(true, user);
+				ClinicaMain.loggedin.put(true, m);
 				InterfaceHelpers.closeParent(contentPane);
 				JOptionPane.showMessageDialog(contentPane, "Benvenuto, "+m.getNome()+"!", "Login Confermato", JOptionPane.INFORMATION_MESSAGE);
 				ClinicaMain.checkMenuLogin();

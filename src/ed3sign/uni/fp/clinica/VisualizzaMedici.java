@@ -128,7 +128,7 @@ public class VisualizzaMedici extends JFrame {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("33px"),
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("59px"),
+				RowSpec.decode("46px"),
 				RowSpec.decode("218px"),
 				RowSpec.decode("23px"),}));
 		
@@ -256,7 +256,7 @@ public class VisualizzaMedici extends JFrame {
 					selected_index--;
 					table.getSelectionModel().clearSelection();
 					
-					// Rimuovi Utente
+					// Rimuovi Utente			
 					System.out.println("Eliminato "+medici.elencoMedici.get(selected_index).getNome()+" a riga: "+selected_index);
 					medici.elencoMedici.remove(selected_index);
 					((DefaultTableModel)table.getModel()).removeRow(selected_index);

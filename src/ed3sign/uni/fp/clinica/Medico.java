@@ -3,6 +3,7 @@ package ed3sign.uni.fp.clinica;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import ed3sign.uni.fp.utility.MyFile;
 
@@ -13,6 +14,8 @@ public class Medico extends Utente{
 	private String albo;
 	private String tipologia;
 	private ArrayList<String> competenze;
+	private HashMap<Integer, ArrayList<Date>> orariSettimanali; 
+	private HashMap<Date, ArrayList<Date>> orariGiornalieri;
 	File f_medici = new File(ClinicaMain.MEDICI_FILENAME);
 	
 	/**
@@ -41,13 +44,15 @@ public class Medico extends Utente{
 		this.albo = albo;
 		this.tipologia = tipologia;
 		this.competenze = competenze;
+		this.orariSettimanali = new HashMap<Integer, ArrayList<Date>>();
+		this.orariGiornalieri = new HashMap<Date, ArrayList<Date>>();
 	}
 	
 	public void aggiungiMedico(Medico newMedico) {
 		ElencoMedici elencoMedici = null;
 		
 		// Existing File
-		if(f_users.exists())
+		if(f_medici.exists())
 			elencoMedici = (ElencoMedici) MyFile.loadObject(f_medici, ClinicaMain.MEDICI_FILENAME);
 		// New File
 		else
@@ -60,6 +65,15 @@ public class Medico extends Utente{
 	/**
 	 * Setters and Getters
 	 */
+	public HashMap<Integer, ArrayList<Date>> getOrariSettimanali() {
+		return orariSettimanali;
+	}
+
+	public void setOrariSettimanali(
+			HashMap<Integer, ArrayList<Date>> orariSettimanali) {
+		this.orariSettimanali = orariSettimanali;
+	}
+	
 	public String getAlbo() {
 		return albo;
 	}

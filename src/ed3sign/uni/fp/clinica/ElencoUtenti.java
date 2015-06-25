@@ -21,8 +21,8 @@ public class ElencoUtenti implements Serializable{
 	/**
 	 * Salva File Utenti
 	 */
-	public void saveUsers(){
-		MyFile.saveObject(f_users, elencoUtenti, ClinicaMain.UTENTI_FILENAME);
+	public void saveUsers(ElencoUtenti toSave){
+		MyFile.saveObject(f_users, toSave, ClinicaMain.UTENTI_FILENAME);
 	}
 
 	/**

@@ -176,7 +176,7 @@ public class NuovoMedico extends NuovoUtente {
 				// Verifica Inserimento Dati
 				if(tf_user.getText().equals("") || tf_pass.getPassword().equals("") || tf_nome.getText().equals("") || tf_cognome.getText().equals("") || dateChooser.getDate() == null || tf_luogo_nascita.getText().equals("") 
 						|| tf_telefono.getText().equals("") || tf_codiceFiscale.getText().equals(""))
-					JOptionPane.showMessageDialog(contentPane, "Attenzione! Compilare tutti i dati richiesti!", "Errore di Validazione", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(contentPane, "Attenzione! Inserisci tutti i dati!", "Errore di Validazione", JOptionPane.WARNING_MESSAGE);
 				else{
 					String user=tf_user.getText();
 					String pass=new String(tf_pass.getPassword());
@@ -206,13 +206,14 @@ public class NuovoMedico extends NuovoUtente {
 					else
 						medici = new ElencoMedici();
 						
-					// Controllo Utente giï¿½ esistente
+					// Controllo Utente già esistente
 					boolean existing = false;
 					if(medici.elencoMedici.size()>0){
 						for(Medico m : medici.elencoMedici){
 							if(user.equals(m.getUser())){
-								System.out.println("Medico giï¿½esistente");
-								JOptionPane.showMessageDialog(contentPane, "Medico giï¿½ presente nei nostri archivi!", "Errore", JOptionPane.WARNING_MESSAGE);
+								System.out.println("Medico già esistente");
+								JOptionPane.showMessageDialog(contentPane, "Medico già presente nei nostri archivi!", "Errore", JOptionPane.WARNING_MESSAGE);
+								existing=true;
 							}
 						}
 					}
@@ -224,12 +225,11 @@ public class NuovoMedico extends NuovoUtente {
 						String albo = MyUtil.generaCodAlbo(cognome);
 						Medico newMedico = new Medico(user, pass, nome, cognome, date, luogo, sesso, tel, cod, albo, tipo, competenze);
 						newMedico.aggiungiMedico(newMedico);
-						JOptionPane.showMessageDialog(contentPane, "Utente Inserito!", "Operazione Riuscita", JOptionPane.DEFAULT_OPTION);
+						JOptionPane.showMessageDialog(contentPane, "Medico Inserito!", "Operazione Riuscita", JOptionPane.DEFAULT_OPTION);
 						
 						// FIELD RESET
 						InterfaceHelpers.cls(contentPane);
 						dateChooser.setDate(null);
-					
 					}
 				}
 			}

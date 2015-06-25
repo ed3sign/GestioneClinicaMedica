@@ -53,7 +53,7 @@ public class Utente implements Serializable {
 			utenti = new ElencoUtenti();
 			
 		utenti.elencoUtenti.add(newUtente);
-		utenti.saveUsers();
+		utenti.saveUsers(utenti);
 	}
 
 	/**

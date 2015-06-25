@@ -34,6 +34,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -47,10 +48,9 @@ public class OrariSettimanali extends JFrame {
 	public static final int STARTING_HOUR = 8;
 	public static final int TIME_SLOT_DURATION = 30;
 	public static final int TIME_SLOTS = 20;
-	private static final String DISPONIBILE = "Disponibile";
+	public static final String DISPONIBILE = "Disponibile";
 	protected Calendar cal = Calendar.getInstance();
-	protected static final String WEEK_FILENAME = "orari_settimana.txt";
-	protected File f_orariSettimana = new File(WEEK_FILENAME);
+	protected File f_medici = new File(ClinicaMain.MEDICI_FILENAME);
 	protected HashMap<Integer, ArrayList<Date>> orariSettimanali;
 	
 
@@ -78,7 +78,7 @@ public class OrariSettimanali extends JFrame {
 	    cal.set(Calendar.MINUTE, 0);
 	    cal.set(Calendar.SECOND, 0);
 	    
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 580);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -191,7 +191,19 @@ public class OrariSettimanali extends JFrame {
 					  System.out.println("Chiave: "+key+ " Contenuto: "+value);
 				}
 				
-				MyFile.saveObject(f_orariSettimana, orariSettimanali, WEEK_FILENAME);
+				// Salvataggio Orari Settimanali
+				ElencoMedici medici = null;
+				Medico m = ClinicaMain.loggedin.get(true);
+				medici = (ElencoMedici) MyFile.loadObject(f_medici, ClinicaMain.MEDICI_FILENAME);
+				
+				// Aggiornamento Medico
+				for(Medico m1 : medici.elencoMedici){
+					if(m1.getUser().equals(m.getUser()))
+						m1.setOrariSettimanali(orariSettimanali);
+				}
+				
+				// Salvataggio su File
+				MyFile.saveObject(f_medici, medici, ClinicaMain.MEDICI_FILENAME);
 				JOptionPane.showMessageDialog(getParent(), "Orari Salvati!");
 			}
 		});
@@ -215,34 +227,31 @@ public class OrariSettimanali extends JFrame {
 	/**
 	 * Load Table
 	 */
-	@SuppressWarnings("unchecked")
 	public void loadTable(){
-		if(f_orariSettimana.exists()){
-			orariSettimanali = (HashMap<Integer, ArrayList<Date>>) MyFile.loadObject(f_orariSettimana, WEEK_FILENAME);
-			for (Entry <Integer, ArrayList<Date>> entry : orariSettimanali.entrySet()) {
-				ArrayList<Date> dates = entry.getValue();
-				for(int i=0; i<dates.size(); i++){
-					int col = entry.getKey();
-					int row = MyUtil.getHourRows(cal, dates.get(i));
-					System.out.println(row);
-					
-					if(!dates.isEmpty()){
-						table.setValueAt(DISPONIBILE, row, col);
+		// Accesso Richiesto
+		if(ClinicaMain.loggedin.isEmpty()){
+			JOptionPane.showMessageDialog(contentPane, "Effettuare il login prima di proseguire!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
+			System.exit(0);
+		}
+		else if(f_medici.exists()){
+			orariSettimanali = ClinicaMain.loggedin.get(true).getOrariSettimanali();
+			System.out.println(orariSettimanali);
+			if(orariSettimanali != null){
+				for (Entry <Integer, ArrayList<Date>> entry : orariSettimanali.entrySet()) {
+					ArrayList<Date> dates = entry.getValue();
+					for(int i=0; i<dates.size(); i++){
+						int col = entry.getKey();
+						int row = MyUtil.getHourRows(cal, dates.get(i));
+						
+						if(!dates.isEmpty()){
+							table.setValueAt(DISPONIBILE, row, col);
+						}
 					}
 				}
 			}
+			else{
+				orariSettimanali = new HashMap<Integer, ArrayList<Date>>();
+			}
 		}
-		else orariSettimanali = new HashMap<Integer, ArrayList<Date>>();
-	}
-	
-	
-	/**
-	 * Remove all Rows from table
-	 * @param model table model
-	 */
-	public void removeAllRows(DefaultTableModel model){
-		int rows = model.getRowCount(); 
-		for(int i = rows - 1; i >=0; i--)
-		   model.removeRow(i); 
 	}
 }

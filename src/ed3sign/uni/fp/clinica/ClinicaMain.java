@@ -26,13 +26,14 @@ public class ClinicaMain {
 	final static String SUCCESS_LOAD = "Caricamento Avvenuto con successo!";
 	final static String MSG_NO_FILE = "Nessun file trovato.";
 	final static String CAST_ERROR = "Errore di casting!";
-	protected static HashMap<Boolean, String> loggedin = new HashMap<Boolean, String >();
+	protected static HashMap<Boolean, Medico> loggedin = new HashMap<Boolean, Medico >();
 	
 	private static JMenu mn_visualizza = null;
 	private static JMenu menu_aggiungi = null;
 	private static JMenu menu_orari = null;
 	private static JMenuItem mntmLogout = null;
 	private static JMenuItem mnLogin = null;
+	private static JMenuItem mntmNuovaVisita = null;
 	private JFrame frame;
 	
 	/**
@@ -46,7 +47,7 @@ public class ClinicaMain {
 		ElencoUtenti utenti = null;
 		ElencoMedici medici = null;
 		
-		// Caricamento File, se gi√† esistente
+		// Caricamento File, se gi‡† esistente
 		if(f_users.exists()){
 			try{
 				utenti = (ElencoUtenti) MyFile.loadObject(f_users, UTENTI_FILENAME);
@@ -153,7 +154,13 @@ public class ClinicaMain {
 		});
 		menu_aggiungi.add(mntmNuovoMedico);
 		
-		JMenuItem mntmNuovaVisita = new JMenuItem("Nuova Visita");
+		mntmNuovaVisita = new JMenuItem("Nuova Visita");
+		mntmNuovaVisita.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				NuovaVisita newVisita = new NuovaVisita();
+				newVisita.setVisible(true);
+			}
+		});
 		menu_aggiungi.add(mntmNuovaVisita);
 		
 		mn_visualizza = new JMenu("Visualizza");
@@ -185,29 +192,37 @@ public class ClinicaMain {
 		menuBar.add(menu_orari);
 		
 		JMenuItem mntmImpostaOrariDi = new JMenuItem("Imposta Orari di Visita");
+		mntmImpostaOrariDi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				OrariSettimanali orari = new OrariSettimanali();
+				orari.setVisible(true);
+			}
+		});
 		menu_orari.add(mntmImpostaOrariDi);
 		
 		JMenu menu_help = new JMenu("Help");
 		menuBar.add(menu_help);
 		
 		// Testing: already logged in
-		loggedin.put(true, "gianni");
+		//loggedin.put(true, "gianni");
 		checkMenuLogin();
 	}
 	
 	public static void checkMenuLogin(){
 		if(loggedin.isEmpty()){
-			menu_aggiungi.setVisible(false);
 			mn_visualizza.setVisible(false);
 			menu_orari.setVisible(false);
 			mntmLogout.setVisible(false);
+			mntmNuovaVisita.setVisible(false);
 			mnLogin.setVisible(true);
+			
 		}
 		else{
 			mntmLogout.setVisible(true);
 			menu_aggiungi.setVisible(true);
 			mn_visualizza.setVisible(true);
 			menu_orari.setVisible(true);
+			mntmNuovaVisita.setVisible(true);
 			mnLogin.setVisible(false);
 		}
 	}
