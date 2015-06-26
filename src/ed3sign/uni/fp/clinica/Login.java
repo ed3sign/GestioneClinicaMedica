@@ -57,15 +57,15 @@ public class Login extends JFrame {
 	 */
 	public Login() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 344, 201);
+		setBounds(100, 100, 344, 183);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 10, 0, 173, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.columnWidths = new int[]{20, 10, 0, 173, 20, 0};
+		gbl_contentPane.rowHeights = new int[]{20, 0, 10, 0, 15, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblUtente = new JLabel("Nome Utente");
@@ -73,7 +73,7 @@ public class Login extends JFrame {
 		gbc_lblUtente.anchor = GridBagConstraints.WEST;
 		gbc_lblUtente.insets = new Insets(0, 0, 5, 5);
 		gbc_lblUtente.gridx = 1;
-		gbc_lblUtente.gridy = 4;
+		gbc_lblUtente.gridy = 1;
 		contentPane.add(lblUtente, gbc_lblUtente);
 		
 		tf_utente = new JTextField();
@@ -81,7 +81,7 @@ public class Login extends JFrame {
 		gbc_tf_utente.insets = new Insets(0, 0, 5, 5);
 		gbc_tf_utente.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tf_utente.gridx = 3;
-		gbc_tf_utente.gridy = 4;
+		gbc_tf_utente.gridy = 1;
 		contentPane.add(tf_utente, gbc_tf_utente);
 		tf_utente.setColumns(10);
 		
@@ -90,7 +90,7 @@ public class Login extends JFrame {
 		gbc_lblPassword.anchor = GridBagConstraints.WEST;
 		gbc_lblPassword.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPassword.gridx = 1;
-		gbc_lblPassword.gridy = 6;
+		gbc_lblPassword.gridy = 3;
 		contentPane.add(lblPassword, gbc_lblPassword);
 		
 		btnLogin = new JButton("Login");
@@ -123,14 +123,14 @@ public class Login extends JFrame {
 		gbc_tf_pass.insets = new Insets(0, 0, 5, 5);
 		gbc_tf_pass.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tf_pass.gridx = 3;
-		gbc_tf_pass.gridy = 6;
+		gbc_tf_pass.gridy = 3;
 		contentPane.add(tf_pass, gbc_tf_pass);
 		
 		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
-		gbc_btnLogin.insets = new Insets(0, 0, 5, 5);
-		gbc_btnLogin.anchor = GridBagConstraints.WEST;
-		gbc_btnLogin.gridx = 3;
-		gbc_btnLogin.gridy = 9;
+		gbc_btnLogin.gridwidth = 3;
+		gbc_btnLogin.insets = new Insets(0, 0, 0, 5);
+		gbc_btnLogin.gridx = 1;
+		gbc_btnLogin.gridy = 5;
 		contentPane.add(btnLogin, gbc_btnLogin);
 	}
 	

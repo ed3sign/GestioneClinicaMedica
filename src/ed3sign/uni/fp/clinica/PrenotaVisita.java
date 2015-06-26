@@ -1,23 +1,37 @@
 package ed3sign.uni.fp.clinica;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
 import java.awt.Font;
-import javax.swing.JComboBox;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.io.File;
+import java.util.Date;
+
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
+import javax.xml.crypto.Data;
+
+import ed3sign.uni.fp.utility.MyFile;
+import ed3sign.uni.fp.utility.MyUtil;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PrenotaVisita extends JFrame {
-
+	
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
+	protected JTextArea ta_motivo;
+	File f_utenti = new File(ClinicaMain.UTENTI_FILENAME);
+	
 	/**
 	 * Launch the application.
 	 */
@@ -25,7 +39,7 @@ public class PrenotaVisita extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PrenotaVisita frame = new PrenotaVisita();
+					PrenotaVisita frame = new PrenotaVisita(null, null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -36,18 +50,21 @@ public class PrenotaVisita extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param orario_visita 
+	 * @param giorno_visita 
+	 * @param m 
 	 */
-	public PrenotaVisita() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public PrenotaVisita(Medico m, Date giorno_visita, Date orario_visita) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 660, 420);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 0, 252, 262, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.columnWidths = new int[]{20, 102, 252, 178, 0};
+		gbl_contentPane.rowHeights = new int[]{20, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblPrenotaVisita = new JLabel("Prenota Visita");
@@ -68,13 +85,13 @@ public class PrenotaVisita extends JFrame {
 		gbc_lblMedico.gridy = 3;
 		contentPane.add(lblMedico, gbc_lblMedico);
 		
-		JLabel lblnomemedico = new JLabel("[nome_medico]");
-		GridBagConstraints gbc_lblnomemedico = new GridBagConstraints();
-		gbc_lblnomemedico.anchor = GridBagConstraints.WEST;
-		gbc_lblnomemedico.insets = new Insets(0, 0, 5, 5);
-		gbc_lblnomemedico.gridx = 2;
-		gbc_lblnomemedico.gridy = 3;
-		contentPane.add(lblnomemedico, gbc_lblnomemedico);
+		JLabel lbl_nomemedico = new JLabel("[nome_medico]");
+		GridBagConstraints gbc_lbl_nomemedico = new GridBagConstraints();
+		gbc_lbl_nomemedico.anchor = GridBagConstraints.WEST;
+		gbc_lbl_nomemedico.insets = new Insets(0, 0, 5, 5);
+		gbc_lbl_nomemedico.gridx = 2;
+		gbc_lbl_nomemedico.gridy = 3;
+		contentPane.add(lbl_nomemedico, gbc_lbl_nomemedico);
 		
 		JLabel lblPaziente = new JLabel("Paziente");
 		GridBagConstraints gbc_lblPaziente = new GridBagConstraints();
@@ -84,13 +101,22 @@ public class PrenotaVisita extends JFrame {
 		gbc_lblPaziente.gridy = 4;
 		contentPane.add(lblPaziente, gbc_lblPaziente);
 		
-		JComboBox comboBox = new JComboBox();
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.gridx = 2;
-		gbc_comboBox.gridy = 4;
-		contentPane.add(comboBox, gbc_comboBox);
+		JComboBox<String> cb_pazienti = new JComboBox<String>();
+		GridBagConstraints gbc_cb_pazienti = new GridBagConstraints();
+		gbc_cb_pazienti.insets = new Insets(0, 0, 5, 5);
+		gbc_cb_pazienti.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cb_pazienti.gridx = 2;
+		gbc_cb_pazienti.gridy = 4;
+		contentPane.add(cb_pazienti, gbc_cb_pazienti);
+		
+		// Caricamento Pazienti (Utenti)
+		if(f_utenti.exists()){
+			ElencoUtenti utenti = null;
+			utenti = (ElencoUtenti) MyFile.loadObject(f_utenti, ClinicaMain.UTENTI_FILENAME);
+			
+			for(Utente u : utenti.elencoUtenti)
+				cb_pazienti.addItem(u.getNome() + " " +u.getCognome() + " - " + u.getCodFiscale());
+		}
 		
 		JLabel lblData = new JLabel("Data");
 		GridBagConstraints gbc_lblData = new GridBagConstraints();
@@ -100,29 +126,29 @@ public class PrenotaVisita extends JFrame {
 		gbc_lblData.gridy = 5;
 		contentPane.add(lblData, gbc_lblData);
 		
-		JLabel lblgiornovisita = new JLabel("[giorno_visita]");
-		GridBagConstraints gbc_lblgiornovisita = new GridBagConstraints();
-		gbc_lblgiornovisita.anchor = GridBagConstraints.WEST;
-		gbc_lblgiornovisita.insets = new Insets(0, 0, 5, 5);
-		gbc_lblgiornovisita.gridx = 2;
-		gbc_lblgiornovisita.gridy = 5;
-		contentPane.add(lblgiornovisita, gbc_lblgiornovisita);
+		JLabel lbl_giorno_visita = new JLabel("[giorno_visita]");
+		GridBagConstraints gbc_lbl_giorno_visita = new GridBagConstraints();
+		gbc_lbl_giorno_visita.anchor = GridBagConstraints.WEST;
+		gbc_lbl_giorno_visita.insets = new Insets(0, 0, 5, 5);
+		gbc_lbl_giorno_visita.gridx = 2;
+		gbc_lbl_giorno_visita.gridy = 5;
+		contentPane.add(lbl_giorno_visita, gbc_lbl_giorno_visita);
 		
-		JLabel lblOrario = new JLabel("Orario");
+		JLabel lbl_Orario = new JLabel("Orario");
 		GridBagConstraints gbc_lblOrario = new GridBagConstraints();
 		gbc_lblOrario.anchor = GridBagConstraints.WEST;
 		gbc_lblOrario.insets = new Insets(0, 0, 5, 5);
 		gbc_lblOrario.gridx = 1;
 		gbc_lblOrario.gridy = 6;
-		contentPane.add(lblOrario, gbc_lblOrario);
+		contentPane.add(lbl_Orario, gbc_lblOrario);
 		
-		JLabel lblorariovisita = new JLabel("[orario_visita]");
-		GridBagConstraints gbc_lblorariovisita = new GridBagConstraints();
-		gbc_lblorariovisita.anchor = GridBagConstraints.WEST;
-		gbc_lblorariovisita.insets = new Insets(0, 0, 5, 5);
-		gbc_lblorariovisita.gridx = 2;
-		gbc_lblorariovisita.gridy = 6;
-		contentPane.add(lblorariovisita, gbc_lblorariovisita);
+		JLabel lbl_orario = new JLabel("[orario_visita]");
+		GridBagConstraints gbc_lbl_orario = new GridBagConstraints();
+		gbc_lbl_orario.anchor = GridBagConstraints.WEST;
+		gbc_lbl_orario.insets = new Insets(0, 0, 5, 5);
+		gbc_lbl_orario.gridx = 2;
+		gbc_lbl_orario.gridy = 6;
+		contentPane.add(lbl_orario, gbc_lbl_orario);
 		
 		JLabel lblMotivoDellaVisita = new JLabel("Motivo della visita (note)");
 		GridBagConstraints gbc_lblMotivoDellaVisita = new GridBagConstraints();
@@ -133,14 +159,57 @@ public class PrenotaVisita extends JFrame {
 		gbc_lblMotivoDellaVisita.gridy = 8;
 		contentPane.add(lblMotivoDellaVisita, gbc_lblMotivoDellaVisita);
 		
-		JTextArea textArea = new JTextArea();
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.gridwidth = 2;
-		gbc_textArea.insets = new Insets(0, 0, 5, 5);
-		gbc_textArea.fill = GridBagConstraints.BOTH;
-		gbc_textArea.gridx = 1;
-		gbc_textArea.gridy = 9;
-		contentPane.add(textArea, gbc_textArea);
+		ta_motivo = new JTextArea();
+		GridBagConstraints gbc_ta_motivo = new GridBagConstraints();
+		gbc_ta_motivo.gridwidth = 2;
+		gbc_ta_motivo.insets = new Insets(0, 0, 5, 5);
+		gbc_ta_motivo.fill = GridBagConstraints.BOTH;
+		gbc_ta_motivo.gridx = 1;
+		gbc_ta_motivo.gridy = 9;
+		contentPane.add(ta_motivo, gbc_ta_motivo);
+		
+		JButton btnConferma = new JButton("Conferma");
+		btnConferma.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Utente u = getPaziente(cb_pazienti);
+				Date data_visita = MyUtil.mergeDateTime(giorno_visita, orario_visita);
+				Visita newVisita = new Visita(m, u, data_visita, ClinicaMain.PRENOTATA, ta_motivo.getText());
+				newVisita.aggiungiVisita(newVisita);
+			}
+		});
+		GridBagConstraints gbc_btnConferma = new GridBagConstraints();
+		gbc_btnConferma.anchor = GridBagConstraints.SOUTH;
+		gbc_btnConferma.insets = new Insets(0, 0, 5, 0);
+		gbc_btnConferma.gridx = 3;
+		gbc_btnConferma.gridy = 9;
+		contentPane.add(btnConferma, gbc_btnConferma);
+		
+		// Set Frame Data
+		if(m!=null && giorno_visita!=null && orario_visita!=null){
+			lbl_nomemedico.setText(m.getNome()+ " " + m.getCognome() + " ("+m.getTipologia()+")");
+			lbl_giorno_visita.setText(MyUtil.timeDateFormat(giorno_visita));
+			lbl_orario.setText(MyUtil.timeIntervalFormat(orario_visita));
+		}
+		else
+			JOptionPane.showMessageDialog(contentPane, "Dati della prenotazione non disponibili!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
+			//frame.dispose();
+	}
+	
+	/**
+	 * Get Utente From Combobox
+	 * @param cb_medico JComboBox con elenco degli utenti (pazienti)
+	 * @return Utente utente selezionato
+	 */
+	public Utente getPaziente(JComboBox<String> cb_pazienti){
+		String user = (String) cb_pazienti.getSelectedItem();
+		String codFisc = user.substring(user.lastIndexOf(" ")+1);
+		ElencoUtenti utenti = null;
+		utenti = (ElencoUtenti) MyFile.loadObject(f_utenti, ClinicaMain.UTENTI_FILENAME);
+		
+		for(Utente u : utenti.elencoUtenti)
+			if(u.getCodFiscale().equals(codFisc))
+				return u;
+		return null;
 	}
 
 }

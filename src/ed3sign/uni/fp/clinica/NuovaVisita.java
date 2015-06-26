@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -121,7 +122,7 @@ public class NuovaVisita extends JFrame {
 				// Header Refresh
 				JTableHeader th = table.getTableHeader();
 				TableColumnModel tcm = th.getColumnModel();
-				for(int i=1; i<ClinicaMain.WORKING_DAYS; i++){
+				for(int i=0; i<ClinicaMain.WORKING_DAYS; i++){
 					Object days[] = getCurrentWeek(dateChooser);
 					TableColumn tc = tcm.getColumn(i);
 					tc.setHeaderValue(days[i]);
@@ -199,12 +200,22 @@ public class NuovaVisita extends JFrame {
 				// Riga Selezionata
 				if(row == -1)
 					JOptionPane.showMessageDialog(contentPane, "Nessun orario selezionato!", "Errore", JOptionPane.WARNING_MESSAGE);
-				else if(!table.getValueAt(row, col).equals(OrariSettimanali.DISPONIBILE))
+				else if(table.getValueAt(row, col) == null || !table.getValueAt(row, col).equals(OrariSettimanali.DISPONIBILE))
 					JOptionPane.showMessageDialog(contentPane, "Medico non disponibile per l'orario selezionato!", "Errore", JOptionPane.WARNING_MESSAGE);
 				else{
-					Date giorno_visita = (Date) (table.getTableHeader().getColumnModel().getColumn(col).getHeaderValue());
+					Date giorno_visita = null;
+					try {giorno_visita =  MyUtil.revertDateFormatter((String) (table.getTableHeader().getColumnModel().getColumn(col).getHeaderValue()));
+					} catch (ParseException e1) {e1.printStackTrace();}
 					Date orario_visita = MyUtil.getHours(cal, row, col);
-					//Visita newVisita = new Visita();
+					Medico m = getMedico(cb_medico);
+					
+					// Controllo Data
+					if(giorno_visita.before(cal.getTime()))
+						JOptionPane.showMessageDialog(contentPane, "Data non valida!", "Errore", JOptionPane.WARNING_MESSAGE);
+					else{
+						PrenotaVisita newPrenotazione = new PrenotaVisita(m, giorno_visita, orario_visita);
+						newPrenotazione.setVisible(true);
+					}
 				}
 			}
 		});
@@ -218,6 +229,8 @@ public class NuovaVisita extends JFrame {
 		// Load Table Data
 		printDayHours(model);
 		loadTable();
+		
+		System.out.println(table.getValueAt(0, 5));
 		 
 		// Table Selected Row Event
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -279,16 +292,9 @@ public class NuovaVisita extends JFrame {
 		}
 		
 		else if(f_medici.exists()){
-			// Medico Selezionato
-			String med = (String) cb_medico.getSelectedItem();
-			String codAlbo= med.substring(0, med.indexOf(" ")); 
-			ElencoMedici medici = null;
-			medici = (ElencoMedici) MyFile.loadObject(f_medici, ClinicaMain.MEDICI_FILENAME);
 			
-			for(Medico m : medici.elencoMedici)
-				if(m.getAlbo().equals(codAlbo))
-					orariSettimanali = m.getOrariSettimanali();
-			
+			// Orari Settimanali del Medico Selezionato
+			orariSettimanali = getMedico(cb_medico).getOrariSettimanali();
 			if(orariSettimanali != null){
 				for (Entry <Integer, ArrayList<Date>> entry : orariSettimanali.entrySet()) {
 					ArrayList<Date> dates = entry.getValue();
@@ -309,6 +315,23 @@ public class NuovaVisita extends JFrame {
 	}
 	
 	/**
+	 * Get Medico From Combobox
+	 * @param cb_medico JComboBox con elenco dei medici
+	 * @return Medico medico selezionato
+	 */
+	public Medico getMedico(JComboBox<String> cb_medico){
+		String med = (String) cb_medico.getSelectedItem();
+		String codAlbo= med.substring(0, med.indexOf(" ")); 
+		ElencoMedici medici = null;
+		medici = (ElencoMedici) MyFile.loadObject(f_medici, ClinicaMain.MEDICI_FILENAME);
+		
+		for(Medico m : medici.elencoMedici)
+			if(m.getAlbo().equals(codAlbo))
+				return m;
+		return null;
+	}
+	
+	/**
 	 * Remove all Rows from table
 	 * @param model table model
 	 */
@@ -316,7 +339,7 @@ public class NuovaVisita extends JFrame {
 		int rows = table.getRowCount();
 		int cols = table.getColumnCount();
 		System.out.println(rows + cols);
-		for(int i = 1; i<rows; i++)
+		for(int i = 0; i<rows; i++)
 			for(int j=1; j<cols; j++)
 				table.setValueAt("", i, j);
 	}

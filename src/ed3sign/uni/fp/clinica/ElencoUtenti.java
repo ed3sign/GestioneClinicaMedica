@@ -9,7 +9,7 @@ import ed3sign.uni.fp.utility.MyFile;
 public class ElencoUtenti implements Serializable{
 	private static final long serialVersionUID = 1L;
 	ArrayList<Utente> elencoUtenti;
-	File f_users = new File(ClinicaMain.UTENTI_FILENAME);
+	File f_utenti = new File(ClinicaMain.UTENTI_FILENAME);
 	
 	/**
 	 * Metodo Costruttore Elenco Utenti
@@ -22,7 +22,7 @@ public class ElencoUtenti implements Serializable{
 	 * Salva File Utenti
 	 */
 	public void saveUsers(ElencoUtenti toSave){
-		MyFile.saveObject(f_users, toSave, ClinicaMain.UTENTI_FILENAME);
+		MyFile.saveObject(f_utenti, toSave, ClinicaMain.UTENTI_FILENAME);
 	}
 
 	/**

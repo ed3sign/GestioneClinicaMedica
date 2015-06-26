@@ -20,8 +20,8 @@ public class ElencoVisite implements Serializable{
 		/**
 		 * Salva File Visite
 		 */
-		public void saveMedici(ElencoMedici elencoMedici) {	
-			MyFile.saveObject(f_visite, elencoMedici, ClinicaMain.VISITE_FILENAME);
+		public void saveVisite(ElencoVisite elencoVisite) {	
+			MyFile.saveObject(f_visite, elencoVisite, ClinicaMain.VISITE_FILENAME);
 		}
 
 		/**

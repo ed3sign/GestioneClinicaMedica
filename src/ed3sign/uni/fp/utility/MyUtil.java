@@ -10,6 +10,9 @@ import java.util.GregorianCalendar;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicLong;
+
+import javax.xml.crypto.Data;
+
 import ed3sign.uni.fp.clinica.OrariSettimanali;
 
 //Classe proposta dal professore durante le lezioni, copiata e modificata
@@ -233,11 +236,46 @@ public class MyUtil {
 		return output;
 	}
 	
-	/* Time Format */
+	/* Simple Date Format */
+	public static String timeDateFormat(Date date){
+		SimpleDateFormat hf = new SimpleDateFormat("dd/MM/yyyy");
+		return hf.format(date);
+	}
+	
+	/* Time Hour Format */
 	public static String timeHourFormat(Date date){
 		SimpleDateFormat hf = new SimpleDateFormat("HH:mm");
 		return hf.format(date);
 	}
+	
+	/* Time Appointment Format */
+	public static String timeIntervalFormat(Date date){
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		String check_in = timeHourFormat(date);
+		cal.add(Calendar.MINUTE, OrariSettimanali.TIME_SLOT_DURATION);
+		String check_out = timeHourFormat(cal.getTime());
+
+		return check_in + " - "+check_out;
+	}
+	
+	/* Merge Dates */
+	public static Date mergeDateTime(Date date, Date time) {
+		  // Construct date and time objects
+		  Calendar dateCal = Calendar.getInstance();
+		  dateCal.setTime(date);
+		  Calendar timeCal = Calendar.getInstance();
+		  timeCal.setTime(time);
+
+		  // Extract the time of the "time" object to the "date"
+		  dateCal.set(Calendar.HOUR_OF_DAY, timeCal.get(Calendar.HOUR_OF_DAY));
+		  dateCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+
+		  // Get the time value!
+		  date = dateCal.getTime();
+		  return date;
+	}
+	
 	
 	/* Get Hours Based on Index */
 	public static Date getHours(Calendar cal, int row, int col){

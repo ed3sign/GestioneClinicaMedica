@@ -27,6 +27,7 @@ public class ClinicaMain {
 	final static String MSG_NO_FILE = "Nessun file trovato.";
 	final static String CAST_ERROR = "Errore di casting!";
 	protected static final int WORKING_DAYS = 6;
+	protected static final String PRENOTATA = "PRENOTATA";
 	protected static HashMap<Boolean, Medico> loggedin = new HashMap<Boolean, Medico >();
 	
 	private static JMenu mn_visualizza = null;
@@ -187,6 +188,12 @@ public class ClinicaMain {
 		mn_visualizza.add(mntmElencoMedici);
 		
 		JMenuItem mntmElencoVisite = new JMenuItem("Elenco Visite");
+		mntmElencoVisite.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				VisualizzaVisite newVisualizzaVisite = new  VisualizzaVisite();
+				newVisualizzaVisite.setVisible(true);
+			}
+		});
 		mn_visualizza.add(mntmElencoVisite);
 		
 		menu_orari = new JMenu("Orari & Visite");
