@@ -47,9 +47,12 @@ public class NuovaVisita extends JFrame {
 	private Calendar cal = Calendar.getInstance();
 	private JTable table;
 	private File f_medici = new File(ClinicaMain.MEDICI_FILENAME);
+	private File f_visite = new File(ClinicaMain.VISITE_FILENAME);
 	private HashMap<Integer, ArrayList<Date>> orariSettimanali;
+	private JDateChooser dateChooser;
 	private JComboBox<String> cb_medico;
 	private DefaultTableModel model;
+	
 
 	/**
 	 * Launch the application.
@@ -103,7 +106,7 @@ public class NuovaVisita extends JFrame {
 		gbc_lblNewLabel.gridy = 3;
 		contentPane.add(lblNewLabel, gbc_lblNewLabel);
 		
-		JDateChooser dateChooser = new JDateChooser();
+		dateChooser = new JDateChooser();
 		GridBagConstraints gbc_dateChooser = new GridBagConstraints();
 		gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
 		gbc_dateChooser.fill = GridBagConstraints.BOTH;
@@ -118,16 +121,8 @@ public class NuovaVisita extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loadTable();
-				
-				// Header Refresh
-				JTableHeader th = table.getTableHeader();
-				TableColumnModel tcm = th.getColumnModel();
-				for(int i=0; i<ClinicaMain.WORKING_DAYS; i++){
-					Object days[] = getCurrentWeek(dateChooser);
-					TableColumn tc = tcm.getColumn(i);
-					tc.setHeaderValue(days[i]);
-				}
-				th.repaint();
+				headerRefresh();
+				printVisite();
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -203,17 +198,35 @@ public class NuovaVisita extends JFrame {
 				else if(table.getValueAt(row, col) == null || !table.getValueAt(row, col).equals(OrariSettimanali.DISPONIBILE))
 					JOptionPane.showMessageDialog(contentPane, "Medico non disponibile per l'orario selezionato!", "Errore", JOptionPane.WARNING_MESSAGE);
 				else{
+					// Get Giorno Visita
 					Date giorno_visita = null;
 					try {giorno_visita =  MyUtil.revertDateFormatter((String) (table.getTableHeader().getColumnModel().getColumn(col).getHeaderValue()));
 					} catch (ParseException e1) {e1.printStackTrace();}
+					
+					// Get Current Date
+					Calendar now = new GregorianCalendar();
+					Date current_date = new Date();
+					current_date = now.getTime();
+					
+					// Get Orario Visita
 					Date orario_visita = MyUtil.getHours(cal, row, col);
+					
+					// Merge Date
+					Date data_visita = MyUtil.mergeDateTime(giorno_visita, orario_visita);
+					
+					// Get Medico
 					Medico m = getMedico(cb_medico);
 					
+					// Print Data
+					System.out.println("Data Attuale: "+current_date);
+					System.out.println("Data Prenotazione: "+data_visita);
+					
+					
 					// Controllo Data
-					if(giorno_visita.before(cal.getTime()))
+					if(data_visita.before(current_date))
 						JOptionPane.showMessageDialog(contentPane, "Data non valida!", "Errore", JOptionPane.WARNING_MESSAGE);
 					else{
-						PrenotaVisita newPrenotazione = new PrenotaVisita(m, giorno_visita, orario_visita);
+						PrenotaVisita newPrenotazione = new PrenotaVisita(m, data_visita);
 						newPrenotazione.setVisible(true);
 					}
 				}
@@ -229,22 +242,25 @@ public class NuovaVisita extends JFrame {
 		// Load Table Data
 		printDayHours(model);
 		loadTable();
-		
-		System.out.println(table.getValueAt(0, 5));
 		 
 		// Table Selected Row Event
-		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+		ListSelectionListener newSelection = new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
 	        	// Disabilita selezione Prima colonna
 	        	if(table.getSelectedColumn() == 0){
 	        		table.getSelectionModel().clearSelection();
 	        	}
-	        	
+	        
 	        	if(table.getSelectedRowCount() > 0){
-	        		table.setSelectionBackground(Color.green);
+	        		if(table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()).equals(OrariSettimanali.PRENOTATA))
+	        			table.setSelectionBackground(Color.red);
+	        		else
+	        			table.setSelectionBackground(Color.green);
 	        	}
 	        }
-	    });
+	    };
+	    table.getColumnModel().getSelectionModel().addListSelectionListener(newSelection);
+		table.getSelectionModel().addListSelectionListener(newSelection);
 	}
 	
 	/**
@@ -292,7 +308,6 @@ public class NuovaVisita extends JFrame {
 		}
 		
 		else if(f_medici.exists()){
-			
 			// Orari Settimanali del Medico Selezionato
 			orariSettimanali = getMedico(cb_medico).getOrariSettimanali();
 			if(orariSettimanali != null){
@@ -300,8 +315,7 @@ public class NuovaVisita extends JFrame {
 					ArrayList<Date> dates = entry.getValue();
 					for(int i=0; i<dates.size(); i++){
 						int col = entry.getKey();
-						int row = MyUtil.getHourRows(cal, dates.get(i));
-						
+						int row = MyUtil.getHourRow(cal, dates.get(i));
 						if(!dates.isEmpty()){
 							table.setValueAt(OrariSettimanali.DISPONIBILE, row, col);
 						}
@@ -332,13 +346,55 @@ public class NuovaVisita extends JFrame {
 	}
 	
 	/**
+	 * Header Refresh
+	 */
+	public void headerRefresh(){
+		JTableHeader th = table.getTableHeader();
+		TableColumnModel tcm = th.getColumnModel();
+		for(int i=0; i<ClinicaMain.WORKING_DAYS; i++){
+			Object days[] = getCurrentWeek(dateChooser);
+			TableColumn tc = tcm.getColumn(i);
+			tc.setHeaderValue(days[i]);
+		}
+		th.repaint();
+	}
+	
+	/**
+	 * Print Visite
+	 * @param table
+	 */
+	public void printVisite(){
+		if(f_visite.exists()){
+			ElencoVisite visite = null;
+			visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
+			for(Visita v : visite.elencoVisite){
+				Date dataVisita = v.getData();
+				int row = MyUtil.getHourRow(cal, dataVisita);
+				int col = MyUtil.getDayCol(cal, dataVisita)-1;
+				
+				JTableHeader th = table.getTableHeader();
+				TableColumnModel tcm = th.getColumnModel();
+				
+				// Get Date from Table Header
+				Date col_date = null;
+				try{col_date = MyUtil.revertDayFormatter(tcm.getColumn(col).getHeaderValue().toString());}
+				catch(Exception e){e.printStackTrace();}
+				
+				System.out.println("Header Date: "+MyUtil.dateFormatter(col_date));
+				System.out.println("Visita Date: "+MyUtil.dateFormatter(v.getData()));
+				if(MyUtil.dateFormatter(col_date).equals(MyUtil.dateFormatter(v.getData())))
+					table.setValueAt(OrariSettimanali.PRENOTATA, row, col);
+			}
+		}
+	}
+	
+	/**
 	 * Remove all Rows from table
 	 * @param model table model
 	 */
 	public void clearRowContent(JTable table){
 		int rows = table.getRowCount();
 		int cols = table.getColumnCount();
-		System.out.println(rows + cols);
 		for(int i = 0; i<rows; i++)
 			for(int j=1; j<cols; j++)
 				table.setValueAt("", i, j);

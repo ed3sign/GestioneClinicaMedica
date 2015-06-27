@@ -1,40 +1,27 @@
 package ed3sign.uni.fp.clinica;
 
 import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Date;
 
-import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-import com.toedter.calendar.JDateChooser;
-
-import ed3sign.uni.fp.utility.InterfaceHelpers;
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
+
+import java.awt.Color;
+import java.awt.BorderLayout;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 public class VisualizzaVisite extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -43,6 +30,7 @@ public class VisualizzaVisite extends JFrame {
 	File f_visite = new File(ClinicaMain.VISITE_FILENAME);
 	private JScrollPane scrollPane;
 	private JTable table;
+	private JLabel lblElencoVisite;
 
 	/**
 	 * Launch the application.
@@ -51,7 +39,7 @@ public class VisualizzaVisite extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VisualizzaUtenti frame = new VisualizzaUtenti();
+					VisualizzaVisite frame = new VisualizzaVisite();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -69,28 +57,35 @@ public class VisualizzaVisite extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{804, 0};
-		gbl_contentPane.rowHeights = new int[]{190, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{1.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
+		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 0;
-		contentPane.add(scrollPane, gbc_scrollPane);
+		contentPane.add(scrollPane);
 		
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		table.setBackground(Color.WHITE);
 		scrollPane.setViewportView(table);
 		
 		// Header Tabella
-		String col[] = {"#","Data/Ora","Medico","Paziente", "Motivo"};
+		String col[] = {"Data/Ora","Medico","Paziente","Stato","Motivo"};
 		DefaultTableModel model = new DefaultTableModel(col, 0);
-		printTable(model);
+		table.setModel(model);
+		
+		lblElencoVisite = new JLabel("Elenco Visite");
+		lblElencoVisite.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblElencoVisite.setHorizontalAlignment(SwingConstants.CENTER);
+		contentPane.add(lblElencoVisite, BorderLayout.NORTH);
+		
+		// Nessuna Visita in Archivio
+		ElencoVisite visite = null;
+		visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
+		if(visite == null || visite.elencoVisite.size() == 0){
+			JOptionPane.showMessageDialog(contentPane, "Nessuna visita presente nei nostri archivi!", "Attenzione", JOptionPane.WARNING_MESSAGE);
+		}
+		else{
+			printTable(model);
+		}
 		
 		// Table Refresh
 		addWindowFocusListener(new WindowFocusListener() {
@@ -110,15 +105,14 @@ public class VisualizzaVisite extends JFrame {
 			
 			removeAllRows(model);
 			
-			int index = 1;
 			for(Visita v : visite.elencoVisite){
-				String data_visita = MyUtil.timeDateFormat(v.getData()) + MyUtil.timeIntervalFormat(v.getData());
+				String data_visita = MyUtil.timeDateFormat(v.getData()) + " "+ MyUtil.timeIntervalFormat(v.getData());
 				String medico = v.getMedico().getCognome();
 				String paziente = v.getPaziente().getCognome();
+				String stato = v.getStato();
 				String motivo = v.getDescrizione();
-				Object data[] = {index, data_visita, medico, paziente, motivo};
+				Object data[] = {data_visita, medico, paziente, stato, motivo};
 				model.addRow(data);
-				index++;
 			}
 		}
 	}

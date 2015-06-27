@@ -49,6 +49,7 @@ public class OrariSettimanali extends JFrame {
 	public static final int TIME_SLOT_DURATION = 30;
 	public static final int TIME_SLOTS = 20;
 	public static final String DISPONIBILE = "Disponibile";
+	public static final String PRENOTATA = "Prenotata";
 	protected Calendar cal = Calendar.getInstance();
 	protected File f_medici = new File(ClinicaMain.MEDICI_FILENAME);
 	protected HashMap<Integer, ArrayList<Date>> orariSettimanali;
@@ -240,7 +241,7 @@ public class OrariSettimanali extends JFrame {
 					ArrayList<Date> dates = entry.getValue();
 					for(int i=0; i<dates.size(); i++){
 						int col = entry.getKey();
-						int row = MyUtil.getHourRows(cal, dates.get(i));
+						int row = MyUtil.getHourRow(cal, dates.get(i));
 						
 						if(!dates.isEmpty()){
 							table.setValueAt(DISPONIBILE, row, col);

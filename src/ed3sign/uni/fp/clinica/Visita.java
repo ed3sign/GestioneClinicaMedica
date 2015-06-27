@@ -1,11 +1,13 @@
 package ed3sign.uni.fp.clinica;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Date;
 
 import ed3sign.uni.fp.utility.MyFile;
 
-public class Visita {
+public class Visita implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private Medico medico;
 	private Utente paziente;
 	private Date data;
@@ -34,7 +36,7 @@ public class Visita {
 	 * Aggiungi Visita
 	 * @param newMedico
 	 */
-	public void aggiungiVisita(Visita newVisita) {
+	public boolean aggiungiVisita(Visita newVisita) {
 		ElencoVisite elencoVisite = null;
 		
 		// Existing File
@@ -43,9 +45,27 @@ public class Visita {
 		// New File
 		else
 			elencoVisite = new ElencoVisite();
-			
-		elencoVisite.elencoVisite.add(newVisita);
-		elencoVisite.saveVisite(elencoVisite);
+		
+		
+		// Controllo Inserimento Visita
+		boolean existing = false;
+		if(elencoVisite.elencoVisite.size()>0){
+			for(Visita v : elencoVisite.elencoVisite){
+				System.out.println("Lista Visita: "+v.getData());
+				System.out.println("Nuova Visita: "+newVisita.getData());
+				if(v.getData().equals(newVisita.getData())){
+					System.out.println("Visita già prenotata per l'orario selezionato!");
+					existing = true;
+					return false;
+				}
+			}
+		}
+		if(!existing){
+			elencoVisite.elencoVisite.add(newVisita);
+			elencoVisite.saveVisite(elencoVisite);
+			return true;
+		}
+		return false;
 	}
 
 	

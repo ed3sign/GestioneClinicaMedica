@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class ClinicaMain {
-	
 	final static String UTENTI_FILENAME = "utenti.txt";
 	final static String MEDICI_FILENAME = "medici.txt";
 	final static String VISITE_FILENAME = "visite.txt";

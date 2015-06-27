@@ -61,7 +61,7 @@ public class VisualizzaMedici extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VisualizzaUtenti frame = new VisualizzaUtenti();
+					VisualizzaMedici frame = new VisualizzaMedici();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

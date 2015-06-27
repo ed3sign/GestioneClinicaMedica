@@ -11,7 +11,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,12 +27,14 @@ import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
+import ed3sign.uni.fp.utility.CodiceFiscale;
 import ed3sign.uni.fp.utility.InterfaceHelpers;
 import ed3sign.uni.fp.utility.MyUtil;
 
 public class NuovoUtente extends JFrame{
 
 	private static final long serialVersionUID = 1L;
+	protected static final String CodiceFiscale = null;
 	protected JPanel contentPane;
 	protected JTextField tf_nome;
 	protected JLabel lblCognome;
@@ -41,14 +45,15 @@ public class NuovoUtente extends JFrame{
 	protected JLabel lblTelefono;
 	protected JDateChooser dateChooser;
 	protected JFormattedTextField tf_telefono;
+	protected JLabel lblCodiceFiscale;
 	protected JLabel lblSesso;
-	protected JLabel lblCodFiscale;
 	protected JFormattedTextField tf_codiceFiscale;
 	protected JComboBox<String> cb_sesso;
 	protected JButton button;
 	File f_users = new File(ClinicaMain.UTENTI_FILENAME);
 	protected JLabel lbl_title;
 	protected JSeparator separator;
+	private JButton btnCalcola;
 	
 
 	/**
@@ -78,9 +83,9 @@ public class NuovoUtente extends JFrame{
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{36, 125, 6, 34, 0};
+		gbl_contentPane.columnWidths = new int[]{36, 125, 6, 0, 34, 0};
 		gbl_contentPane.rowHeights = new int[]{45, 0, 0, 0, 0, 28, 28, 28, 28, 28, 27, 28, 0, 0, 60, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
@@ -111,13 +116,14 @@ public class NuovoUtente extends JFrame{
 		
 		tf_nome = new JTextField();
 		GridBagConstraints gbc_tf_nome = new GridBagConstraints();
+		gbc_tf_nome.gridwidth = 2;
 		gbc_tf_nome.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tf_nome.insets = new Insets(0, 0, 5, 5);
 		gbc_tf_nome.gridx = 2;
 		gbc_tf_nome.gridy = 3;
 		contentPane.add(tf_nome, gbc_tf_nome);
 		tf_nome.setColumns(20);
-		tf_nome.setText("Gianni");
+		tf_nome.setText("Sebastiano");
 		
 		// Cognome
 		lblCognome = new JLabel("Cognome");
@@ -131,12 +137,13 @@ public class NuovoUtente extends JFrame{
 		tf_cognome = new JTextField();
 		tf_cognome.setColumns(20);
 		GridBagConstraints gbc_tf_cognome = new GridBagConstraints();
+		gbc_tf_cognome.gridwidth = 2;
 		gbc_tf_cognome.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tf_cognome.insets = new Insets(0, 0, 5, 5);
 		gbc_tf_cognome.gridx = 2;
 		gbc_tf_cognome.gridy = 4;
 		contentPane.add(tf_cognome, gbc_tf_cognome);
-		tf_cognome.setText("Morandi");
+		tf_cognome.setText("Gaggiano");
 		
 		// Data di Nascita
 		lblDatan = new JLabel("Data di Nascita");
@@ -149,6 +156,7 @@ public class NuovoUtente extends JFrame{
 		
 		dateChooser = new JDateChooser();
 		GridBagConstraints gbc_dateChooser = new GridBagConstraints();
+		gbc_dateChooser.gridwidth = 2;
 		gbc_dateChooser.anchor = GridBagConstraints.NORTH;
 		gbc_dateChooser.fill = GridBagConstraints.HORIZONTAL;
 		gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
@@ -168,12 +176,13 @@ public class NuovoUtente extends JFrame{
 		tf_luogo_nascita = new JTextField();
 		tf_luogo_nascita.setColumns(10);
 		GridBagConstraints gbc_tf_luogo_nascita = new GridBagConstraints();
+		gbc_tf_luogo_nascita.gridwidth = 2;
 		gbc_tf_luogo_nascita.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tf_luogo_nascita.insets = new Insets(0, 0, 5, 5);
 		gbc_tf_luogo_nascita.gridx = 2;
 		gbc_tf_luogo_nascita.gridy = 6;
 		contentPane.add(tf_luogo_nascita, gbc_tf_luogo_nascita);
-		tf_luogo_nascita.setText("Monghidoro");
+		tf_luogo_nascita.setText("SAN GIOVANNI ROTONDO");
 		
 		// Telefono
 		lblTelefono = new JLabel("Telefono");
@@ -194,6 +203,7 @@ public class NuovoUtente extends JFrame{
 			}
 		});
 		GridBagConstraints gbc_tf_telefono = new GridBagConstraints();
+		gbc_tf_telefono.gridwidth = 2;
 		gbc_tf_telefono.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tf_telefono.insets = new Insets(0, 0, 5, 5);
 		gbc_tf_telefono.gridx = 2;
@@ -203,13 +213,13 @@ public class NuovoUtente extends JFrame{
 		
 		
 		// Sesso
-		lblSesso = new JLabel("Sesso");
-		GridBagConstraints gbc_lblSesso = new GridBagConstraints();
-		gbc_lblSesso.anchor = GridBagConstraints.WEST;
-		gbc_lblSesso.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSesso.gridx = 1;
-		gbc_lblSesso.gridy = 8;
-		contentPane.add(lblSesso, gbc_lblSesso);
+		lblCodiceFiscale = new JLabel("Cod. Fiscale");
+		GridBagConstraints gbc_lblCodiceFiscale = new GridBagConstraints();
+		gbc_lblCodiceFiscale.anchor = GridBagConstraints.WEST;
+		gbc_lblCodiceFiscale.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCodiceFiscale.gridx = 1;
+		gbc_lblCodiceFiscale.gridy = 8;
+		contentPane.add(lblCodiceFiscale, gbc_lblCodiceFiscale);
 		
 		tf_codiceFiscale = new JFormattedTextField();
 		GridBagConstraints gbc_tf_codiceFiscale = new GridBagConstraints();
@@ -220,25 +230,55 @@ public class NuovoUtente extends JFrame{
 		contentPane.add(tf_codiceFiscale, gbc_tf_codiceFiscale);
 		tf_codiceFiscale.setText("GGGSST95D26H916Y");
 		
+		btnCalcola = new JButton("Calcola");
+		btnCalcola.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(tf_nome.getText().equals("") || tf_cognome.getText().equals("") || dateChooser.getDate() == null || tf_luogo_nascita.getText().equals(""))
+					JOptionPane.showMessageDialog(contentPane, "Attenzione! Compilare tutti i dati richiesti!", "Errore di Validazione", JOptionPane.WARNING_MESSAGE);
+				else{
+					String nome=tf_nome.getText();
+					String cognome=tf_cognome.getText();
+					
+					Date date = (dateChooser.getDate());
+					Calendar cal = new GregorianCalendar();
+					cal.setTime(date);
+
+					String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
+					int day = cal.get(Calendar.DAY_OF_MONTH);
+					int year = cal.get(Calendar.YEAR);
+					String luogo = tf_luogo_nascita.getText();
+					String sesso = cb_sesso.getSelectedItem().toString();
+
+					CodiceFiscale codFisc = new CodiceFiscale(nome, cognome, luogo, year, month, day, sesso);
+					tf_codiceFiscale.setText(codFisc.getCodiceFiscale());
+				}
+			}
+		});
+		GridBagConstraints gbc_btnCalcola = new GridBagConstraints();
+		gbc_btnCalcola.insets = new Insets(0, 0, 5, 5);
+		gbc_btnCalcola.gridx = 3;
+		gbc_btnCalcola.gridy = 8;
+		contentPane.add(btnCalcola, gbc_btnCalcola);
+		
 		// Codice Fiscale
-		lblCodFiscale = new JLabel("Cod. Fiscale");
-		GridBagConstraints gbc_lblCodFiscale = new GridBagConstraints();
-		gbc_lblCodFiscale.anchor = GridBagConstraints.WEST;
-		gbc_lblCodFiscale.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCodFiscale.gridx = 1;
-		gbc_lblCodFiscale.gridy = 9;
-		contentPane.add(lblCodFiscale, gbc_lblCodFiscale);
+		lblSesso = new JLabel("Sesso");
+		GridBagConstraints gbc_lblSesso = new GridBagConstraints();
+		gbc_lblSesso.anchor = GridBagConstraints.WEST;
+		gbc_lblSesso.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSesso.gridx = 1;
+		gbc_lblSesso.gridy = 9;
+		contentPane.add(lblSesso, gbc_lblSesso);
 		
 		
 		/**
 		 * Pulsate Aggiungi
 		 * Evento: Click
 		 */
-		
 		cb_sesso = new JComboBox<String>();
 		cb_sesso.addItem("Maschio");
 		cb_sesso.addItem("Femmina");
 		GridBagConstraints gbc_cb_sesso = new GridBagConstraints();
+		gbc_cb_sesso.gridwidth = 2;
 		gbc_cb_sesso.insets = new Insets(0, 0, 5, 5);
 		gbc_cb_sesso.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cb_sesso.gridx = 2;

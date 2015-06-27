@@ -11,8 +11,6 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.xml.crypto.Data;
-
 import ed3sign.uni.fp.clinica.OrariSettimanali;
 
 //Classe proposta dal professore durante le lezioni, copiata e modificata
@@ -200,6 +198,13 @@ public class MyUtil {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy (EEE)");
 		return dateFormat.format(date);
 	}
+	
+	/* Reverse Format Days */
+	public static Date revertDayFormatter(String d) throws ParseException{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy (EEE)");
+		Date date = dateFormat.parse(d);
+		return date;
+	}
 
 	/* Reverse Format Date */
 	public static Date revertDateFormatter(String d) throws ParseException{
@@ -224,7 +229,6 @@ public class MyUtil {
 	/* Convert Array List to One String */
 	public static String arrayListToString(ArrayList<String> list) {
 		String output="";
-		System.out.println("List size: "+list.size());
 		for (int i=0; i<list.size(); i++){
 			if(list.size() == 1)
 				output += list.get(i);
@@ -290,8 +294,8 @@ public class MyUtil {
 		return cal.getTime();
 	}
 
-	/* Get Rows based on Date */
-	public static int getHourRows(Calendar cal, Date date) {
+	/* Get Row Index based on Date */
+	public static int getHourRow(Calendar cal, Date date) {
 		// Set Starting Time
 		cal.set(Calendar.HOUR_OF_DAY, OrariSettimanali.STARTING_HOUR);
 	    cal.set(Calendar.MINUTE, 0);
@@ -311,5 +315,14 @@ public class MyUtil {
 				return i;
 	    }
 		return 0;
+	}
+	
+	/* Get Col Index based on Date */
+	public static int getDayCol(Calendar cal, Date date){
+		Calendar day = new GregorianCalendar();
+		day.setTime(date);
+		int col = day.get(Calendar.DAY_OF_WEEK);
+		System.out.println("Numero giorno: "+ col);
+		return col;
 	}
 }
