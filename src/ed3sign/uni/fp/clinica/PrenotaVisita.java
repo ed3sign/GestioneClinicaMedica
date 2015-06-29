@@ -58,9 +58,9 @@ public class PrenotaVisita extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{20, 102, 252, 178, 0};
-		gbl_contentPane.rowHeights = new int[]{20, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{20, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblPrenotaVisita = new JLabel("Prenota Visita");
@@ -146,13 +146,32 @@ public class PrenotaVisita extends JFrame {
 		gbc_lbl_orario.gridy = 6;
 		contentPane.add(lbl_orario, gbc_lbl_orario);
 		
+		JLabel lblTipo = new JLabel("Tipo");
+		GridBagConstraints gbc_lblTipo = new GridBagConstraints();
+		gbc_lblTipo.anchor = GridBagConstraints.WEST;
+		gbc_lblTipo.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTipo.gridx = 1;
+		gbc_lblTipo.gridy = 7;
+		contentPane.add(lblTipo, gbc_lblTipo);
+		
+		JComboBox<String> cb_tipo = new JComboBox<String>();
+		if(m.getTipologia().equals("Specialista"))
+			cb_tipo.addItem("Specialistica");
+		cb_tipo.addItem("Generica");
+		GridBagConstraints gbc_cb_tipo = new GridBagConstraints();
+		gbc_cb_tipo.insets = new Insets(0, 0, 5, 5);
+		gbc_cb_tipo.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cb_tipo.gridx = 2;
+		gbc_cb_tipo.gridy = 7;
+		contentPane.add(cb_tipo, gbc_cb_tipo);
+		
 		JLabel lblMotivoDellaVisita = new JLabel("Motivo della visita (note)");
 		GridBagConstraints gbc_lblMotivoDellaVisita = new GridBagConstraints();
 		gbc_lblMotivoDellaVisita.anchor = GridBagConstraints.WEST;
 		gbc_lblMotivoDellaVisita.gridwidth = 2;
 		gbc_lblMotivoDellaVisita.insets = new Insets(0, 0, 5, 5);
 		gbc_lblMotivoDellaVisita.gridx = 1;
-		gbc_lblMotivoDellaVisita.gridy = 8;
+		gbc_lblMotivoDellaVisita.gridy = 9;
 		contentPane.add(lblMotivoDellaVisita, gbc_lblMotivoDellaVisita);
 		
 		ta_motivo = new JTextArea();
@@ -161,14 +180,16 @@ public class PrenotaVisita extends JFrame {
 		gbc_ta_motivo.insets = new Insets(0, 0, 5, 5);
 		gbc_ta_motivo.fill = GridBagConstraints.BOTH;
 		gbc_ta_motivo.gridx = 1;
-		gbc_ta_motivo.gridy = 9;
+		gbc_ta_motivo.gridy = 10;
 		contentPane.add(ta_motivo, gbc_ta_motivo);
 		
 		JButton btnConferma = new JButton("Conferma");
 		btnConferma.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String tipo = cb_tipo.getSelectedItem().toString();
+				String motivo = ta_motivo.getText();
 				Utente u = getPaziente(cb_pazienti);
-				Visita newVisita = new Visita(m, u, data_visita, ClinicaMain.PRENOTATA, ta_motivo.getText());
+				Visita newVisita = new Visita(m, u, data_visita, tipo, ClinicaMain.PRENOTATA, motivo);
 				if(!newVisita.aggiungiVisita(newVisita))
 					JOptionPane.showMessageDialog(contentPane, "Visita già prenotata per l'orario selezionato!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
 			}
@@ -177,7 +198,7 @@ public class PrenotaVisita extends JFrame {
 		gbc_btnConferma.anchor = GridBagConstraints.SOUTH;
 		gbc_btnConferma.insets = new Insets(0, 0, 5, 0);
 		gbc_btnConferma.gridx = 3;
-		gbc_btnConferma.gridy = 9;
+		gbc_btnConferma.gridy = 10;
 		contentPane.add(btnConferma, gbc_btnConferma);
 		
 		// Set Frame Data

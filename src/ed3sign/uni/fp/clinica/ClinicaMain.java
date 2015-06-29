@@ -27,6 +27,8 @@ public class ClinicaMain {
 	final static String CAST_ERROR = "Errore di casting!";
 	protected static final int WORKING_DAYS = 6;
 	protected static final String PRENOTATA = "PRENOTATA";
+	protected static final String GENERICA = "Generica";
+	protected static final String SPECIALISTICA = "Specialistica";
 	protected static HashMap<Boolean, Medico> loggedin = new HashMap<Boolean, Medico >();
 	
 	private static JMenu mn_visualizza = null;

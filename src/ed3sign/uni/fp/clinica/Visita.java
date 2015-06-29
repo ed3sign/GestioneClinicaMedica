@@ -12,6 +12,7 @@ public class Visita implements Serializable{
 	private Utente paziente;
 	private Date data;
 	private String stato;
+	private String tipo;
 	private String descrizione;
 	private File f_visite = new File(ClinicaMain.VISITE_FILENAME);
 	
@@ -23,12 +24,13 @@ public class Visita implements Serializable{
 	 * @param stato Stato della visita (Prenotazione, Referto in Attesa, Archiviata) 
 	 * @param descrizione Motivo della visita
 	 */
-	public Visita(Medico medico, Utente paziente, Date data, String stato, String descrizione) {
+	public Visita(Medico medico, Utente paziente, Date data, String stato, String tipo, String descrizione) {
 		super();
 		this.medico = medico;
 		this.paziente = paziente;
 		this.data = data;
 		this.stato = stato;
+		this.tipo = tipo;
 		this.descrizione = descrizione;
 	}
 	
@@ -120,6 +122,12 @@ public class Visita implements Serializable{
 	public void setF_visite(File f_visite) {
 		this.f_visite = f_visite;
 	}
-	
-	
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}	
 }
