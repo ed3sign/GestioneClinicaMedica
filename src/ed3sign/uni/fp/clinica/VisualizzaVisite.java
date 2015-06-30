@@ -13,7 +13,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.text.ParseException;
 import java.util.Date;
 
 import javax.swing.JComboBox;
@@ -33,6 +36,8 @@ import com.toedter.calendar.JDateChooser;
 
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
+
+import javax.swing.JButton;
 
 public class VisualizzaVisite extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -56,6 +61,7 @@ public class VisualizzaVisite extends JFrame {
 	private JSeparator separator;
 	private JSeparator separator_1;
 	private Button button;
+	private JButton btnNewButton;
 	
 	
 
@@ -85,10 +91,10 @@ public class VisualizzaVisite extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{20, 49, 306, 39, 88, 212, 127, 46, 153, 0};
-		gbl_contentPane.rowHeights = new int[]{21, 0, 32, 0, 0, 474, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWidths = new int[]{20, 49, 306, 39, 88, 212, 127, 46, 153, 20, 0};
+		gbl_contentPane.rowHeights = new int[]{21, 0, 32, 0, 0, 474, 0, 0};
+		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		lblElencoVisite = new JLabel("Elenco Visite");
@@ -98,19 +104,19 @@ public class VisualizzaVisite extends JFrame {
 		gbc_lblElencoVisite.gridwidth = 7;
 		gbc_lblElencoVisite.anchor = GridBagConstraints.NORTH;
 		gbc_lblElencoVisite.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblElencoVisite.insets = new Insets(0, 0, 5, 0);
+		gbc_lblElencoVisite.insets = new Insets(0, 0, 5, 5);
 		gbc_lblElencoVisite.gridx = 2;
 		gbc_lblElencoVisite.gridy = 0;
 		contentPane.add(lblElencoVisite, gbc_lblElencoVisite);
 		
 		// Header Tabella
-		String col[] = {"Data/Ora","Medico","Paziente","Tipo","Stato","Motivo"};
+		String col[] = {"Data/Ora","Medico","Paziente","Stato","Tipo","Motivo"};
 		model = new DefaultTableModel(col, 0);
 		
 		separator = new JSeparator();
 		GridBagConstraints gbc_separator = new GridBagConstraints();
 		gbc_separator.gridwidth = 8;
-		gbc_separator.insets = new Insets(0, 0, 5, 0);
+		gbc_separator.insets = new Insets(0, 0, 5, 5);
 		gbc_separator.gridx = 1;
 		gbc_separator.gridy = 1;
 		contentPane.add(separator, gbc_separator);
@@ -150,7 +156,6 @@ public class VisualizzaVisite extends JFrame {
 			}
 		});
 		
-		
 		lblData = new JLabel("Data");
 		GridBagConstraints gbc_lblData = new GridBagConstraints();
 		gbc_lblData.anchor = GridBagConstraints.EAST;
@@ -167,6 +172,17 @@ public class VisualizzaVisite extends JFrame {
 		gbc_dateChooser.gridy = 2;
 		contentPane.add(dateChooser, gbc_dateChooser);
 		
+		// Detect Date Change
+		dateChooser.getDateEditor().addPropertyChangeListener(
+	    new PropertyChangeListener() {
+	        @Override
+	        public void propertyChange(PropertyChangeEvent e) {
+	            if ("date".equals(e.getPropertyName())) {
+	                loadTable();
+	            }
+	        }
+	    });
+		
 		button = new Button("Azzera Filtri");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -178,7 +194,7 @@ public class VisualizzaVisite extends JFrame {
 		});
 		GridBagConstraints gbc_button = new GridBagConstraints();
 		gbc_button.gridheight = 2;
-		gbc_button.insets = new Insets(0, 0, 5, 0);
+		gbc_button.insets = new Insets(0, 0, 5, 5);
 		gbc_button.gridx = 8;
 		gbc_button.gridy = 2;
 		contentPane.add(button, gbc_button);
@@ -257,7 +273,8 @@ public class VisualizzaVisite extends JFrame {
 		
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridwidth = 9;
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane.gridwidth = 10;
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 5;
@@ -268,6 +285,45 @@ public class VisualizzaVisite extends JFrame {
 		table.setBackground(Color.WHITE);
 		scrollPane.setViewportView(table);
 		table.setModel(model);
+		
+		btnNewButton = new JButton("Inserisci Referto");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int row = table.getSelectedRow();
+				int col = table.getSelectedColumn();
+				
+				System.out.println(table.getValueAt(row, 3));
+				
+				// Riga Selezionata
+				if(row == -1)
+					JOptionPane.showMessageDialog(contentPane, "Nessuna visita selezionata!", "Errore", JOptionPane.WARNING_MESSAGE);
+				else if(table.getValueAt(row, col) == null || table.getValueAt(row, 3).equals(ClinicaMain.PRENOTATA))
+					JOptionPane.showMessageDialog(contentPane, "Visita ancora in attesa!", "Errore", JOptionPane.WARNING_MESSAGE);
+				else if(table.getValueAt(row, col) == null || table.getValueAt(row, 3).equals(ClinicaMain.ARCHIVIATA))
+					JOptionPane.showMessageDialog(contentPane, "Visita già archiviata!", "Errore", JOptionPane.WARNING_MESSAGE);
+				else{
+					ElencoVisite visite = null;
+					visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
+					
+					Date selected_date = MyUtil.splitDateTime(table.getValueAt(row, 0).toString());
+					
+					NuovoReferto referto = null;
+					for(Visita v : visite.elencoVisite){	
+						if(v.getData().equals(selected_date)){
+							referto = new NuovoReferto(v);
+							referto.setVisible(true);
+						}
+					}
+				}
+			}
+		});
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.anchor = GridBagConstraints.EAST;
+		gbc_btnNewButton.gridwidth = 7;
+		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton.gridx = 2;
+		gbc_btnNewButton.gridy = 6;
+		contentPane.add(btnNewButton, gbc_btnNewButton);
 		
 		// Nessuna Visita in Archivio
 		ElencoVisite visite = null;
@@ -295,6 +351,7 @@ public class VisualizzaVisite extends JFrame {
 	public void loadTable(){
 		checkVisite();
 		removeAllRows(model);
+		
 		if(f_visite.exists()){
 			ElencoVisite visite = null;
 			visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
@@ -333,10 +390,10 @@ public class VisualizzaVisite extends JFrame {
 				
 				// Annulla filtro tipo
 				if(cb_tipo.getSelectedIndex() == 0){
-					/*for(int i=0; i<cb_tipo.getItemCount(); i++){
-						if(cb_tipo.getItemAt(i).equals(v.getTipo()))
+					for(int i=0; i<cb_tipo.getItemCount(); i++){
+						if(cb_tipo.getItemAt(i).toString().equals(v.getTipo()))
 							cb_tipo.setSelectedIndex(i);
-					}*/
+					}
 				}
 				
 				// Annulla filtro data
@@ -351,14 +408,12 @@ public class VisualizzaVisite extends JFrame {
 				int indexOfDash = cb_paziente.getSelectedItem().toString().indexOf('-');
 				codFiscale = cb_paziente.getSelectedItem().toString().substring(indexOfDash +1);
 				codFiscale = codFiscale.replaceAll("\\s+","");
-				
-				System.out.println("Tipo CB: "+cb_tipo.getSelectedItem());
-				System.out.println("Tipo: "+v.getTipo());
-				
+
+				// Filter
 				if(v.getMedico().getAlbo().equals(codAlbo)
 						&& v.getPaziente().getCodFiscale().equals(codFiscale)
 						&& v.getData().equals(dateChooser.getDate())
-						){
+						&& v.getTipo().equals(cb_tipo.getSelectedItem().toString())){
 						
 						data_visita = MyUtil.timeDateFormat(v.getData()) + " "+ MyUtil.timeIntervalFormat(v.getData());
 						String medico = v.getMedico().getCognome();

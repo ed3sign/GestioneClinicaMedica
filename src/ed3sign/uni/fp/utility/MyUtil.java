@@ -11,6 +11,8 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.joda.time.LocalTime;
+
 import ed3sign.uni.fp.clinica.OrariSettimanali;
 
 //Classe proposta dal professore durante le lezioni, copiata e modificata
@@ -287,6 +289,31 @@ public class MyUtil {
 		  // Get the time value!
 		  date = dateCal.getTime();
 		  return date;
+	}
+	
+	public static Date splitDateTime(String date){
+		String s_date = date.substring(0,date.indexOf(' ')); 
+		String s_time = date.substring(date.indexOf(' '), date.indexOf(' ')+6);
+		
+		System.out.println("String date "+s_date);
+		System.out.println("String time: "+s_time);
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+		Date calDate = null;
+		
+		// Revert Date
+		try {calDate = MyUtil.revertDateFormatter(s_date);
+		} catch (ParseException e) { e.printStackTrace(); }
+		Date calTime = null;
+		
+		// Revert Time
+		try {calTime = dateFormat.parse(s_time); } 
+		catch (ParseException e) { e.printStackTrace();}
+		
+		Date output = MyUtil.mergeDateTime(calDate, calTime);
+		
+		return output;
+		
 	}
 	
 	

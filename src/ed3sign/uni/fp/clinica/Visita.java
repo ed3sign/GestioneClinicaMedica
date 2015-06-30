@@ -36,7 +36,7 @@ public class Visita implements Serializable{
 	
 	/**
 	 * Aggiungi Visita
-	 * @param newMedico
+	 * @param newVisita
 	 */
 	public boolean aggiungiVisita(Visita newVisita) {
 		ElencoVisite elencoVisite = null;

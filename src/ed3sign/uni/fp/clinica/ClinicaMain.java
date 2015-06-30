@@ -22,6 +22,7 @@ public class ClinicaMain {
 	final static String UTENTI_FILENAME = "utenti.txt";
 	final static String MEDICI_FILENAME = "medici.txt";
 	final static String VISITE_FILENAME = "visite.txt";
+	final static String REFERTI_FILENAME = "referti.txt";
 	final static String SUCCESS_LOAD = "Caricamento Avvenuto con successo!";
 	final static String MSG_NO_FILE = "Nessun file trovato.";
 	final static String CAST_ERROR = "Errore di casting!";

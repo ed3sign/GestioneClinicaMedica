@@ -15,7 +15,6 @@ public class Medico extends Utente{
 	private String tipologia;
 	private ArrayList<String> competenze;
 	private HashMap<Integer, ArrayList<Date>> orariSettimanali; 
-	private HashMap<Date, ArrayList<Date>> orariGiornalieri;
 	File f_medici = new File(ClinicaMain.MEDICI_FILENAME);
 	
 	/**
@@ -45,7 +44,6 @@ public class Medico extends Utente{
 		this.tipologia = tipologia;
 		this.competenze = competenze;
 		this.orariSettimanali = new HashMap<Integer, ArrayList<Date>>();
-		this.orariGiornalieri = new HashMap<Date, ArrayList<Date>>();
 	}
 	
 	public void aggiungiMedico(Medico newMedico) {
