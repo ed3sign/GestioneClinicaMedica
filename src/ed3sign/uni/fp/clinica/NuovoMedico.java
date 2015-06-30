@@ -42,11 +42,13 @@ public class NuovoMedico extends NuovoUtente {
 	public NuovoMedico() throws IOException {
 		super();
 		
+		setBounds(100, 100, 700, 510);
+		
 		GridBagLayout gridBagLayout = (GridBagLayout) getContentPane().getLayout();
-		gridBagLayout.columnWidths = new int[]{56, 124, 350, 61, 0};
+		gridBagLayout.columnWidths = new int[]{20, 124, 386, 50, 20};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 2.0, 0.0};
 		
 		lbl_title.setText("Nuovo Medico");
 		
@@ -62,8 +64,8 @@ public class NuovoMedico extends NuovoUtente {
 		getContentPane().add(lblTipologia, gbc_lblTipologia);
 		
 		JComboBox<String> cb_tipologia = new JComboBox<String>();
-		cb_tipologia.addItem("Generico");
-		cb_tipologia.addItem("Specialista");
+		cb_tipologia.addItem(ClinicaMain.GENERICO);
+		cb_tipologia.addItem(ClinicaMain.SPECIALISTA);
 		GridBagConstraints gbc_cb_tipologia = new GridBagConstraints();
 		gbc_cb_tipologia.insets = new Insets(0, 0, 5, 5);
 		gbc_cb_tipologia.fill = GridBagConstraints.HORIZONTAL;
@@ -145,6 +147,7 @@ public class NuovoMedico extends NuovoUtente {
 		
 		tf_user = new JTextField();
 		GridBagConstraints gbc_tf_user = new GridBagConstraints();
+		gbc_tf_user.gridwidth = 2;
 		gbc_tf_user.insets = new Insets(0, 0, 5, 5);
 		gbc_tf_user.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tf_user.gridx = 2;
@@ -162,6 +165,7 @@ public class NuovoMedico extends NuovoUtente {
 		
 		tf_pass = new JPasswordField();
 		GridBagConstraints gbc_tf_pass = new GridBagConstraints();
+		gbc_tf_pass.gridwidth = 2;
 		gbc_tf_pass.insets = new Insets(0, 0, 5, 5);
 		gbc_tf_pass.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tf_pass.gridx = 2;
@@ -176,7 +180,7 @@ public class NuovoMedico extends NuovoUtente {
 				// Verifica Inserimento Dati
 				if(tf_user.getText().equals("") || tf_pass.getPassword().equals("") || tf_nome.getText().equals("") || tf_cognome.getText().equals("") || dateChooser.getDate() == null || tf_luogo_nascita.getText().equals("") 
 						|| tf_telefono.getText().equals("") || tf_codiceFiscale.getText().equals(""))
-					JOptionPane.showMessageDialog(contentPane, "Attenzione! Inserisci tutti i dati!", "Errore di Validazione", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(contentPane, "Attenzione! Inserisci tutti i dati richiesti!", "Errore di Validazione", JOptionPane.WARNING_MESSAGE);
 				else{
 					String user=tf_user.getText();
 					String pass=new String(tf_pass.getPassword());
@@ -206,13 +210,13 @@ public class NuovoMedico extends NuovoUtente {
 					else
 						medici = new ElencoMedici();
 						
-					// Controllo Utente già esistente
+					// Controllo Utente giï¿½ esistente
 					boolean existing = false;
 					if(medici.elencoMedici.size()>0){
 						for(Medico m : medici.elencoMedici){
 							if(user.equals(m.getUser())){
-								System.out.println("Medico già esistente");
-								JOptionPane.showMessageDialog(contentPane, "Medico già presente nei nostri archivi!", "Errore", JOptionPane.WARNING_MESSAGE);
+								System.out.println("Medico giï¿½ esistente");
+								JOptionPane.showMessageDialog(contentPane, "Medico giï¿½ presente nei nostri archivi!", "Errore", JOptionPane.WARNING_MESSAGE);
 								existing=true;
 							}
 						}
@@ -229,6 +233,7 @@ public class NuovoMedico extends NuovoUtente {
 						
 						// FIELD RESET
 						InterfaceHelpers.cls(contentPane);
+						InterfaceHelpers.cleanCheckboxes(contentPane);
 						dateChooser.setDate(null);
 					}
 				}

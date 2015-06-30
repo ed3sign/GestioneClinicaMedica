@@ -164,6 +164,14 @@ public class NuovaVisita extends JFrame {
 				cb_medico.addItem(m.getAlbo() + " - " +m.getCognome()+ " "+m.getNome()+ " ("+m.getTipologia()+")");
 		}
 		
+		// Selezione Medico Loggato
+		for(int i=0; i<cb_medico.getItemCount(); i++){
+			String med = (String) cb_medico.getItemAt(i);
+			String codAlbo= med.substring(0, med.indexOf(" ")); 
+			if(ClinicaMain.loggedin.get(true) != null && ClinicaMain.loggedin.get(true).getAlbo().equals(codAlbo))
+				cb_medico.setSelectedIndex(i);
+		}
+		
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridwidth = 3;
@@ -204,9 +212,7 @@ public class NuovaVisita extends JFrame {
 					} catch (ParseException e1) {e1.printStackTrace();}
 					
 					// Get Current Date
-					Calendar now = new GregorianCalendar();
-					Date current_date = new Date();
-					current_date = now.getTime();
+					Date current_date = MyUtil.getCurrentTime(); 
 					
 					// Get Orario Visita
 					Date orario_visita = MyUtil.getHours(cal, row, col);
@@ -216,11 +222,6 @@ public class NuovaVisita extends JFrame {
 					
 					// Get Medico
 					Medico m = getMedico(cb_medico);
-					
-					// Print Data
-					System.out.println("Data Attuale: "+current_date);
-					System.out.println("Data Prenotazione: "+data_visita);
-					
 					
 					// Controllo Data
 					if(data_visita.before(current_date))
@@ -368,22 +369,37 @@ public class NuovaVisita extends JFrame {
 			ElencoVisite visite = null;
 			visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
 			for(Visita v : visite.elencoVisite){
-				Date dataVisita = v.getData();
-				int row = MyUtil.getHourRow(cal, dataVisita);
-				int col = MyUtil.getDayCol(cal, dataVisita)-1;
 				
-				JTableHeader th = table.getTableHeader();
-				TableColumnModel tcm = th.getColumnModel();
+				// Get Current Date
+				Calendar now = new GregorianCalendar();
+				Date current_date = new Date();
+				current_date = now.getTime();
 				
-				// Get Date from Table Header
-				Date col_date = null;
-				try{col_date = MyUtil.revertDayFormatter(tcm.getColumn(col).getHeaderValue().toString());}
-				catch(Exception e){e.printStackTrace();}
+				// Archiviazione Visite Completate
+				if(v.getData().before(current_date))
+					v.setStato(ClinicaMain.CONCLUSA);
 				
-				System.out.println("Header Date: "+MyUtil.dateFormatter(col_date));
-				System.out.println("Visita Date: "+MyUtil.dateFormatter(v.getData()));
-				if(MyUtil.dateFormatter(col_date).equals(MyUtil.dateFormatter(v.getData())))
-					table.setValueAt(OrariSettimanali.PRENOTATA, row, col);
+				// Get Selected Codice Albo From Combobox
+				String med = (String) cb_medico.getSelectedItem();
+				String codAlbo = med.substring(0, med.indexOf(" "));
+				
+				// Stampa Visite relative al medico selezionato
+				if(v.getMedico().getAlbo().equals(codAlbo)){
+					Date dataVisita = v.getData();
+					int row = MyUtil.getHourRow(cal, dataVisita);
+					int col = MyUtil.getDayCol(cal, dataVisita)-1;
+					
+					JTableHeader th = table.getTableHeader();
+					TableColumnModel tcm = th.getColumnModel();
+					
+					// Get Date from Table Header
+					Date col_date = null;
+					try{col_date = MyUtil.revertDayFormatter(tcm.getColumn(col).getHeaderValue().toString());}
+					catch(Exception e){e.printStackTrace();}
+					
+					if(MyUtil.dateFormatter(col_date).equals(MyUtil.dateFormatter(v.getData())))
+						table.setValueAt(OrariSettimanali.PRENOTATA, row, col);
+				}
 			}
 		}
 	}

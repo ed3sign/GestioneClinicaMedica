@@ -5,8 +5,10 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Date;
 
@@ -27,6 +29,7 @@ public class PrenotaVisita extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	protected JTextArea ta_motivo;
+	protected static PrenotaVisita frame;
 	File f_utenti = new File(ClinicaMain.UTENTI_FILENAME);
 	
 	/**
@@ -36,7 +39,7 @@ public class PrenotaVisita extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PrenotaVisita frame = new PrenotaVisita(null, null);
+					frame = new PrenotaVisita(null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -155,9 +158,9 @@ public class PrenotaVisita extends JFrame {
 		contentPane.add(lblTipo, gbc_lblTipo);
 		
 		JComboBox<String> cb_tipo = new JComboBox<String>();
-		if(m.getTipologia().equals("Specialista"))
-			cb_tipo.addItem("Specialistica");
-		cb_tipo.addItem("Generica");
+		if(m.getTipologia().equals(ClinicaMain.SPECIALISTA))
+			cb_tipo.addItem(ClinicaMain.SPECIALISTICA);
+		cb_tipo.addItem(ClinicaMain.GENERICA);
 		GridBagConstraints gbc_cb_tipo = new GridBagConstraints();
 		gbc_cb_tipo.insets = new Insets(0, 0, 5, 5);
 		gbc_cb_tipo.fill = GridBagConstraints.HORIZONTAL;
@@ -189,9 +192,13 @@ public class PrenotaVisita extends JFrame {
 				String tipo = cb_tipo.getSelectedItem().toString();
 				String motivo = ta_motivo.getText();
 				Utente u = getPaziente(cb_pazienti);
-				Visita newVisita = new Visita(m, u, data_visita, tipo, ClinicaMain.PRENOTATA, motivo);
+				Visita newVisita = new Visita(m, u, data_visita, ClinicaMain.PRENOTATA, tipo, motivo);
 				if(!newVisita.aggiungiVisita(newVisita))
 					JOptionPane.showMessageDialog(contentPane, "Visita già prenotata per l'orario selezionato!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
+				else{
+					JOptionPane.showMessageDialog(contentPane, "Visita prenotata per l'orario selezionato!", "Operazione Effettuata", JOptionPane.INFORMATION_MESSAGE);
+					((Window) contentPane.getParent()).dispose();
+				}
 			}
 		});
 		GridBagConstraints gbc_btnConferma = new GridBagConstraints();
@@ -207,9 +214,11 @@ public class PrenotaVisita extends JFrame {
 			lbl_giorno_visita.setText(MyUtil.timeDateFormat(data_visita));
 			lbl_orario.setText(MyUtil.timeIntervalFormat(data_visita));
 		}
-		else
+		else{
 			JOptionPane.showMessageDialog(contentPane, "Dati della prenotazione non disponibili!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
-			//frame.dispose();
+			System.exit(0);
+		}
+			
 	}
 	
 	/**

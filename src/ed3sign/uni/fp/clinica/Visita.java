@@ -24,7 +24,7 @@ public class Visita implements Serializable{
 	 * @param stato Stato della visita (Prenotazione, Referto in Attesa, Archiviata) 
 	 * @param descrizione Motivo della visita
 	 */
-	public Visita(Medico medico, Utente paziente, Date data, String stato, String tipo, String descrizione) {
+	public Visita(Medico medico, Utente paziente, Date data, String stato, String tipo, String descrizione){
 		super();
 		this.medico = medico;
 		this.paziente = paziente;

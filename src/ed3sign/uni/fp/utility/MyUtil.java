@@ -187,6 +187,15 @@ public class MyUtil {
 		return false;
 	}
 	
+	/* Get Current Time */
+	public static Date getCurrentTime(){
+		Calendar now = new GregorianCalendar();
+		Date current_date = new Date();
+		current_date = now.getTime();
+		return current_date;
+	}
+	
+	
 	/* Format Date */
 	public static String dateFormatter(Date date){
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

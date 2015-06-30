@@ -48,6 +48,7 @@ public class VisualizzaUtenti extends JFrame {
 	protected JSplitPane splitPane;
 	protected int selected_index;
 	File f_users = new File(ClinicaMain.UTENTI_FILENAME);
+	File f_visite = new File(ClinicaMain.VISITE_FILENAME);
 	JTable table;
 
 	/**
@@ -254,6 +255,7 @@ public class VisualizzaUtenti extends JFrame {
 		// Elimina Records
 		JButton btnElimina = new JButton("Elimina");
 		btnElimina.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent arg0) {
 				// Ottieni Lista Utenti
 				ElencoUtenti utenti = null;
@@ -263,6 +265,14 @@ public class VisualizzaUtenti extends JFrame {
 				int selected_index =  (int) ((table.getValueAt(table.getSelectedRow(), 0)));
 				selected_index--;
 				table.getSelectionModel().clearSelection();
+				
+				// Rimuovi Visite Associate all'utente
+				ElencoVisite visite = null;
+				visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
+				for(int i=0; i<visite.elencoVisite.size(); i++){
+					if(visite.elencoVisite.get(i).getPaziente().equals(utenti.elencoUtenti.get(selected_index)))
+							visite.elencoVisite.remove(i);
+				}
 				
 				// Rimuovi Utente
 				System.out.println("Eliminato "+utenti.elencoUtenti.get(selected_index).getNome()+" a riga: "+selected_index);

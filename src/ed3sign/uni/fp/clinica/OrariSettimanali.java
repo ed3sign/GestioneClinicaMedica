@@ -52,6 +52,7 @@ public class OrariSettimanali extends JFrame {
 	public static final String PRENOTATA = "Prenotata";
 	protected Calendar cal = Calendar.getInstance();
 	protected File f_medici = new File(ClinicaMain.MEDICI_FILENAME);
+	protected File f_visite = new File(ClinicaMain.VISITE_FILENAME);
 	protected HashMap<Integer, ArrayList<Date>> orariSettimanali;
 	
 
@@ -172,39 +173,50 @@ public class OrariSettimanali extends JFrame {
 		btnSalva = new JButton("Salva");
 		btnSalva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for(int j=0; j<table.getColumnCount(); j++){
-					ArrayList<Date> orariMedico = new ArrayList<Date>();
-            		for(int i=0; i<table.getRowCount(); i++){
-            			if(table.getValueAt(i, j) != null && table.getValueAt(i, j).equals(DISPONIBILE)){
-            				Date intervallo = MyUtil.getHours(cal, i, j);
-            				orariMedico.add(intervallo);
-            			}
-            		}
-            		// Inserimento Hashmap
-            		orariSettimanali.put(j, orariMedico);
-            	}
-				
-				// Stampa Hashmap
-				for (Entry <Integer, ArrayList<Date>> entry : orariSettimanali.entrySet()) {
-					  Integer key = entry.getKey();
-					  ArrayList<Date> value = entry.getValue();
-					  System.out.println("Chiave: "+key+ " Contenuto: "+value);
+				int choice = JOptionPane.showConfirmDialog(getParent(), "L'aggiornamento degli orari settimanali comporterà la rimozione di tutte le visite prenotate");
+				if(choice == JOptionPane.YES_OPTION){
+					for(int j=0; j<table.getColumnCount(); j++){
+						ArrayList<Date> orariMedico = new ArrayList<Date>();
+	            		for(int i=0; i<table.getRowCount(); i++){
+	            			if(table.getValueAt(i, j) != null && table.getValueAt(i, j).equals(DISPONIBILE)){
+	            				Date intervallo = MyUtil.getHours(cal, i, j);
+	            				orariMedico.add(intervallo);
+	            			}
+	            		}
+	            		// Inserimento Hashmap
+	            		orariSettimanali.put(j, orariMedico);
+	            	}
+					
+					// Stampa Hashmap
+					for (Entry <Integer, ArrayList<Date>> entry : orariSettimanali.entrySet()) {
+						  Integer key = entry.getKey();
+						  ArrayList<Date> value = entry.getValue();
+						  System.out.println("Chiave: "+key+ " Contenuto: "+value);
+					}
+					
+					// Salvataggio Orari Settimanali
+					ElencoMedici medici = null;
+					Medico m = ClinicaMain.loggedin.get(true);
+					medici = (ElencoMedici) MyFile.loadObject(f_medici, ClinicaMain.MEDICI_FILENAME);
+					
+					// Reset delle Visite
+					ElencoVisite visite = null;
+					visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
+					for(int i=0; i<visite.elencoVisite.size(); i++){
+						if(visite.elencoVisite.get(i).getStato().equals(ClinicaMain.PRENOTATA) && visite.elencoVisite.get(i).getMedico().equals(m))
+							visite.elencoVisite.remove(i);
+					}
+					
+					// Aggiornamento Medico
+					for(Medico m1 : medici.elencoMedici){
+						if(m1.getUser().equals(m.getUser()))
+							m1.setOrariSettimanali(orariSettimanali);
+					}
+					
+					// Salvataggio su File
+					MyFile.saveObject(f_medici, medici, ClinicaMain.MEDICI_FILENAME);
+					JOptionPane.showMessageDialog(getParent(), "Orari Salvati!");
 				}
-				
-				// Salvataggio Orari Settimanali
-				ElencoMedici medici = null;
-				Medico m = ClinicaMain.loggedin.get(true);
-				medici = (ElencoMedici) MyFile.loadObject(f_medici, ClinicaMain.MEDICI_FILENAME);
-				
-				// Aggiornamento Medico
-				for(Medico m1 : medici.elencoMedici){
-					if(m1.getUser().equals(m.getUser()))
-						m1.setOrariSettimanali(orariSettimanali);
-				}
-				
-				// Salvataggio su File
-				MyFile.saveObject(f_medici, medici, ClinicaMain.MEDICI_FILENAME);
-				JOptionPane.showMessageDialog(getParent(), "Orari Salvati!");
 			}
 		});
 		contentPane.add(btnSalva, gbc_btnSalva);

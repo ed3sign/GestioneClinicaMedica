@@ -29,6 +29,7 @@ import com.toedter.calendar.JDateChooser;
 
 import ed3sign.uni.fp.utility.CodiceFiscale;
 import ed3sign.uni.fp.utility.InterfaceHelpers;
+import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
 
 public class NuovoUtente extends JFrame{
@@ -50,7 +51,7 @@ public class NuovoUtente extends JFrame{
 	protected JFormattedTextField tf_codiceFiscale;
 	protected JComboBox<String> cb_sesso;
 	protected JButton button;
-	File f_users = new File(ClinicaMain.UTENTI_FILENAME);
+	File f_utenti = new File(ClinicaMain.UTENTI_FILENAME);
 	protected JLabel lbl_title;
 	protected JSeparator separator;
 	private JButton btnCalcola;
@@ -78,14 +79,14 @@ public class NuovoUtente extends JFrame{
 	 */
 	public NuovoUtente() throws IOException {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 641, 507);
+		setBounds(100, 100, 640, 510);
 		contentPane = new JPanel();
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{36, 125, 6, 0, 34, 0};
+		gbl_contentPane.columnWidths = new int[]{36, 125, 359, 160, 34, 0};
 		gbl_contentPane.rowHeights = new int[]{45, 0, 0, 0, 0, 28, 28, 28, 28, 28, 27, 28, 0, 0, 60, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
@@ -234,7 +235,7 @@ public class NuovoUtente extends JFrame{
 		btnCalcola.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tf_nome.getText().equals("") || tf_cognome.getText().equals("") || dateChooser.getDate() == null || tf_luogo_nascita.getText().equals(""))
-					JOptionPane.showMessageDialog(contentPane, "Attenzione! Compilare tutti i dati richiesti!", "Errore di Validazione", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(contentPane, "Attenzione! Dati insufficienti per il calcolo del CF!", "Errore di Validazione", JOptionPane.WARNING_MESSAGE);
 				else{
 					String nome=tf_nome.getText();
 					String cognome=tf_cognome.getText();
@@ -255,6 +256,7 @@ public class NuovoUtente extends JFrame{
 			}
 		});
 		GridBagConstraints gbc_btnCalcola = new GridBagConstraints();
+		gbc_btnCalcola.anchor = GridBagConstraints.EAST;
 		gbc_btnCalcola.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCalcola.gridx = 3;
 		gbc_btnCalcola.gridy = 8;
@@ -299,22 +301,38 @@ public class NuovoUtente extends JFrame{
 					String sesso = cb_sesso.getSelectedItem().toString();
 					String tel = tf_telefono.getText();
 					String cod = tf_codiceFiscale.getText();
+					boolean existing = false;
 						
 					// Validazione Codice Fiscale
 					if(!MyUtil.checkCodFisc(cod))
 						JOptionPane.showMessageDialog(contentPane, "Formato del Codice Fiscale non valido!", "Errore di Validazione", JOptionPane.WARNING_MESSAGE);
-					else{
-						Utente newUtente = new Utente(nome, cognome, date, luogo, sesso, tel, cod);
-						newUtente.aggiungiUtente(newUtente);
-						JOptionPane.showMessageDialog(contentPane, "Utente Inserito!", "Operazione Riuscita", JOptionPane.DEFAULT_OPTION);
-						
-						// FIELD RESET
-						InterfaceHelpers.cls(contentPane);
-						dateChooser.setDate(null);
 					
+					// Controllo Duplicazione Utente
+					else{
+						if(f_utenti.exists()){
+							ElencoUtenti utenti = null;
+							utenti = (ElencoUtenti) MyFile.loadObject(f_utenti, ClinicaMain.UTENTI_FILENAME);
+							
+							for(Utente u : utenti.elencoUtenti)
+								if(u.getCodFiscale().equals(cod)){
+									existing = true;
+									JOptionPane.showMessageDialog(contentPane, "Utente già presente nei nostri archivi!", "Errore", JOptionPane.WARNING_MESSAGE);	
+								}
+							}
+						}
+						
+						// Inserimento Utente
+						if(!existing){
+							Utente newUtente = new Utente(nome, cognome, date, luogo, sesso, tel, cod);
+							newUtente.aggiungiUtente(newUtente);
+							JOptionPane.showMessageDialog(contentPane, "Utente Inserito!", "Operazione Riuscita", JOptionPane.DEFAULT_OPTION);
+							
+							// FIELD RESET
+							InterfaceHelpers.cls(contentPane);
+							dateChooser.setDate(null);
+						}
 					}
 				}
-			}
 		});
 		GridBagConstraints gbc_button = new GridBagConstraints();
 		gbc_button.gridwidth = 2;

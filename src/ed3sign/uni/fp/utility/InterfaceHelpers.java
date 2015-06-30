@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
+import javax.swing.JCheckBox;
 
 public class InterfaceHelpers {
 
@@ -41,5 +42,17 @@ public class InterfaceHelpers {
 		     model.removeRow(rows[i]-i);
 		   }
 		   table.getSelectionModel().clearSelection();
-		}
+	}
+	
+	// Reset Checkboxes
+	public static void cleanCheckboxes(JPanel contentPane){
+		Component[] components = contentPane.getComponents();
+	    for (Component component : components) {
+	    	if (component instanceof JCheckBox) {
+	    		JCheckBox specificObj = (JCheckBox) component;
+	    		specificObj.setSelected(false);
+	    	}
+	    }
+	}
+	
 }

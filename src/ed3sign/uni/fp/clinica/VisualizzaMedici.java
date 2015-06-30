@@ -52,6 +52,7 @@ public class VisualizzaMedici extends JFrame {
 	protected JDateChooser dateChooser;
 	protected JSplitPane splitPane;
 	File f_medici = new File(ClinicaMain.MEDICI_FILENAME);
+	File f_visite = new File(ClinicaMain.VISITE_FILENAME);
 	JTable table;
 
 	/**
@@ -255,6 +256,14 @@ public class VisualizzaMedici extends JFrame {
 					int selected_index =  (int) ((table.getValueAt(table.getSelectedRow(), 0)));
 					selected_index--;
 					table.getSelectionModel().clearSelection();
+					
+					// Rimuovi Visite Associate all'utente
+					ElencoVisite visite = null;
+					visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
+					for(int i=0; i<visite.elencoVisite.size(); i++){
+						if(visite.elencoVisite.get(i).getPaziente().equals(medici.elencoMedici.get(selected_index)))
+								visite.elencoVisite.remove(i);
+					}
 					
 					// Rimuovi Utente			
 					System.out.println("Eliminato "+medici.elencoMedici.get(selected_index).getNome()+" a riga: "+selected_index);

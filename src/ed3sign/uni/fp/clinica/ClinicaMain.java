@@ -26,9 +26,13 @@ public class ClinicaMain {
 	final static String MSG_NO_FILE = "Nessun file trovato.";
 	final static String CAST_ERROR = "Errore di casting!";
 	protected static final int WORKING_DAYS = 6;
-	protected static final String PRENOTATA = "PRENOTATA";
+	protected static final String PRENOTATA = "Prenotata";
+	protected final static String CONCLUSA = "Conclusa";
+	protected final static String ARCHIVIATA = "Archiviata";
 	protected static final String GENERICA = "Generica";
 	protected static final String SPECIALISTICA = "Specialistica";
+	protected static final String SPECIALISTA = "Specialista";
+	protected static final String GENERICO = "Generico";
 	protected static HashMap<Boolean, Medico> loggedin = new HashMap<Boolean, Medico >();
 	
 	private static JMenu mn_visualizza = null;
@@ -101,7 +105,7 @@ public class ClinicaMain {
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 		
-		JMenu mnUtente = new JMenu("Utente");
+		JMenu mnUtente = new JMenu("Accesso");
 		menuBar.add(mnUtente);
 		
 		mnLogin = new JMenuItem("Login");
@@ -219,7 +223,6 @@ public class ClinicaMain {
 	
 	public static void checkMenuLogin(){
 		if(loggedin.isEmpty()){
-			mn_visualizza.setVisible(false);
 			menu_orari.setVisible(false);
 			mntmLogout.setVisible(false);
 			mntmNuovaVisita.setVisible(false);
@@ -229,7 +232,6 @@ public class ClinicaMain {
 		else{
 			mntmLogout.setVisible(true);
 			menu_aggiungi.setVisible(true);
-			mn_visualizza.setVisible(true);
 			menu_orari.setVisible(true);
 			mntmNuovaVisita.setVisible(true);
 			mnLogin.setVisible(false);
