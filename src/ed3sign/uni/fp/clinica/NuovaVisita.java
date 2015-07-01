@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -74,6 +76,14 @@ public class NuovaVisita extends JFrame {
 	 * Create the frame.
 	 */
 	public NuovaVisita() {
+		// Window Refresh
+		addWindowFocusListener(new WindowFocusListener() {
+			public void windowGainedFocus(WindowEvent e) {
+				loadTable();
+			}
+			public void windowLostFocus(WindowEvent e) {
+			}
+		});
 		cal.set(Calendar.HOUR_OF_DAY, OrariSettimanali.STARTING_HOUR);
 	    cal.set(Calendar.MINUTE, 0);
 	    cal.set(Calendar.SECOND, 0);
@@ -278,23 +288,7 @@ public class NuovaVisita extends JFrame {
 			model.addRow(data);
 		}
 	}
-	
-	/**
-	 * 
-	 */
-	// Header Tabella Settimana Corrente
-	public Object[] getCurrentWeek(JDateChooser date){
-		Calendar now = date.getCalendar();
-		Object[] days = new String[ClinicaMain.WORKING_DAYS];
-	    int delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; // Week start on Monday
-	    now.add(Calendar.DAY_OF_MONTH, delta);
-	    days[0] = "";
-	    for (int i = 1; i < days.length; i++){
-	        days[i] = MyUtil.dayFormatter(now.getTime());
-	        now.add(Calendar.DAY_OF_MONTH, 1);
-	    }
-	    return days;
-	}
+
 	
 	/**
 	 * Load Table
@@ -327,7 +321,10 @@ public class NuovaVisita extends JFrame {
 				orariSettimanali = new HashMap<Integer, ArrayList<Date>>();
 			}
 		}
+		printVisite();
 	}
+	
+	
 	
 	/**
 	 * Get Medico From Combobox
@@ -344,20 +341,6 @@ public class NuovaVisita extends JFrame {
 			if(m.getAlbo().equals(codAlbo))
 				return m;
 		return null;
-	}
-	
-	/**
-	 * Header Refresh
-	 */
-	public void headerRefresh(){
-		JTableHeader th = table.getTableHeader();
-		TableColumnModel tcm = th.getColumnModel();
-		for(int i=0; i<ClinicaMain.WORKING_DAYS; i++){
-			Object days[] = getCurrentWeek(dateChooser);
-			TableColumn tc = tcm.getColumn(i);
-			tc.setHeaderValue(days[i]);
-		}
-		th.repaint();
 	}
 	
 	/**
@@ -397,11 +380,44 @@ public class NuovaVisita extends JFrame {
 					try{col_date = MyUtil.revertDayFormatter(tcm.getColumn(col).getHeaderValue().toString());}
 					catch(Exception e){e.printStackTrace();}
 					
+					System.out.print(row + col);
+					
 					if(MyUtil.dateFormatter(col_date).equals(MyUtil.dateFormatter(v.getData())))
 						table.setValueAt(OrariSettimanali.PRENOTATA, row, col);
 				}
 			}
 		}
+	}
+	
+	
+	/**
+	 * Header Tabella Settimana Corrente
+	 */
+	public Object[] getCurrentWeek(JDateChooser date){
+		Calendar now = date.getCalendar();
+		Object[] days = new String[ClinicaMain.WORKING_DAYS];
+	    int delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; // Week start on Monday
+	    now.add(Calendar.DAY_OF_MONTH, delta);
+	    days[0] = "";
+	    for (int i = 1; i < days.length; i++){
+	        days[i] = MyUtil.dayFormatter(now.getTime());
+	        now.add(Calendar.DAY_OF_MONTH, 1);
+	    }
+	    return days;
+	}
+	
+	/**
+	 * Header Refresh
+	 */
+	public void headerRefresh(){
+		JTableHeader th = table.getTableHeader();
+		TableColumnModel tcm = th.getColumnModel();
+		for(int i=0; i<ClinicaMain.WORKING_DAYS; i++){
+			Object days[] = getCurrentWeek(dateChooser);
+			TableColumn tc = tcm.getColumn(i);
+			tc.setHeaderValue(days[i]);
+		}
+		th.repaint();
 	}
 	
 	/**

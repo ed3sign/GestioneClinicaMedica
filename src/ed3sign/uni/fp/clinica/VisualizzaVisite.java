@@ -16,9 +16,9 @@ import java.awt.event.WindowFocusListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.text.ParseException;
 import java.util.Date;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,8 +36,6 @@ import com.toedter.calendar.JDateChooser;
 
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
-
-import javax.swing.JButton;
 
 public class VisualizzaVisite extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -91,7 +89,7 @@ public class VisualizzaVisite extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{20, 49, 306, 39, 88, 212, 127, 46, 153, 20, 0};
+		gbl_contentPane.columnWidths = new int[]{20, 49, 306, 39, 88, 212, 31, 46, 153, 20, 0};
 		gbl_contentPane.rowHeights = new int[]{21, 0, 32, 0, 0, 474, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
@@ -292,15 +290,13 @@ public class VisualizzaVisite extends JFrame {
 				int row = table.getSelectedRow();
 				int col = table.getSelectedColumn();
 				
-				System.out.println(table.getValueAt(row, 3));
-				
 				// Riga Selezionata
 				if(row == -1)
 					JOptionPane.showMessageDialog(contentPane, "Nessuna visita selezionata!", "Errore", JOptionPane.WARNING_MESSAGE);
 				else if(table.getValueAt(row, col) == null || table.getValueAt(row, 3).equals(ClinicaMain.PRENOTATA))
 					JOptionPane.showMessageDialog(contentPane, "Visita ancora in attesa!", "Errore", JOptionPane.WARNING_MESSAGE);
 				else if(table.getValueAt(row, col) == null || table.getValueAt(row, 3).equals(ClinicaMain.ARCHIVIATA))
-					JOptionPane.showMessageDialog(contentPane, "Visita già archiviata!", "Errore", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(contentPane, "Visita giï¿½ archiviata!", "Errore", JOptionPane.WARNING_MESSAGE);
 				else{
 					ElencoVisite visite = null;
 					visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
@@ -433,12 +429,17 @@ public class VisualizzaVisite extends JFrame {
 	 */
 	public void checkVisite(){
 		Date current_date = MyUtil.getCurrentTime();
+		System.out.println("Current Date: "+current_date);
 		ElencoVisite visite = null;
 		if(f_visite.exists()){
 			visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
 			for(Visita v : visite.elencoVisite){
-				if(v.getData().before(current_date))
+				System.out.println("Visita Data: "+v.getData());
+				if(v.getData().before(current_date)){
+					System.out.println("Swag");
 					v.setStato(ClinicaMain.CONCLUSA);
+					MyFile.saveObject(f_visite, visite, ClinicaMain.VISITE_FILENAME);
+				}
 			}
 		}
 	}

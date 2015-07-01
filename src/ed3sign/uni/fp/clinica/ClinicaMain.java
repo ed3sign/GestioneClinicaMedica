@@ -202,6 +202,15 @@ public class ClinicaMain {
 		});
 		mn_visualizza.add(mntmElencoVisite);
 		
+		JMenuItem mntmElencoReferti = new JMenuItem("Elenco Referti");
+		mntmElencoReferti.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VisualizzaReferti newVisualizzaReferti = new VisualizzaReferti();
+				newVisualizzaReferti.setVisible(true);
+			}
+		});
+		mn_visualizza.add(mntmElencoReferti);
+		
 		menu_orari = new JMenu("Orari & Visite");
 		menuBar.add(menu_orari);
 		

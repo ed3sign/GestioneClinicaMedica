@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -157,7 +156,7 @@ public class PrenotaVisita extends JFrame {
 		contentPane.add(lblTipo, gbc_lblTipo);
 		
 		JComboBox<String> cb_tipo = new JComboBox<String>();
-		if(m.getTipologia().equals(ClinicaMain.SPECIALISTA))
+		if(m != null && m.getTipologia().equals(ClinicaMain.SPECIALISTA))
 			cb_tipo.addItem(ClinicaMain.SPECIALISTICA);
 		cb_tipo.addItem(ClinicaMain.GENERICA);
 		GridBagConstraints gbc_cb_tipo = new GridBagConstraints();
@@ -196,7 +195,6 @@ public class PrenotaVisita extends JFrame {
 					JOptionPane.showMessageDialog(contentPane, "Visita già prenotata per l'orario selezionato!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
 				else{
 					JOptionPane.showMessageDialog(contentPane, "Visita prenotata per l'orario selezionato!", "Operazione Effettuata", JOptionPane.INFORMATION_MESSAGE);
-					((Window) contentPane.getParent()).dispose();
 				}
 			}
 		});

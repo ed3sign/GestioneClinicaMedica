@@ -173,8 +173,15 @@ public class OrariSettimanali extends JFrame {
 		btnSalva = new JButton("Salva");
 		btnSalva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int choice = JOptionPane.showConfirmDialog(getParent(), "L'aggiornamento degli orari settimanali comporterà la rimozione di tutte le visite prenotate");
-				if(choice == JOptionPane.YES_OPTION){
+				int choice = 0;
+				boolean existing = false;
+				Medico m = ClinicaMain.loggedin.get(true);
+				if(!m.getOrariSettimanali().isEmpty()){
+					choice = JOptionPane.showConfirmDialog(getParent(), "L'aggiornamento degli orari settimanali comporterà la rimozione di tutte le visite prenotate");
+					existing = true;
+				}
+				
+				if(choice == JOptionPane.YES_OPTION || !existing){
 					for(int j=0; j<table.getColumnCount(); j++){
 						ArrayList<Date> orariMedico = new ArrayList<Date>();
 	            		for(int i=0; i<table.getRowCount(); i++){
@@ -196,7 +203,6 @@ public class OrariSettimanali extends JFrame {
 					
 					// Salvataggio Orari Settimanali
 					ElencoMedici medici = null;
-					Medico m = ClinicaMain.loggedin.get(true);
 					medici = (ElencoMedici) MyFile.loadObject(f_medici, ClinicaMain.MEDICI_FILENAME);
 					
 					// Reset delle Visite

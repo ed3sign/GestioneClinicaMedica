@@ -19,7 +19,6 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import ed3sign.uni.fp.utility.MyFile;
-import ed3sign.uni.fp.utility.MyUtil;
 
 public class NuovoReferto extends JFrame {
 	

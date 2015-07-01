@@ -26,6 +26,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class Login extends JFrame {
@@ -77,6 +79,13 @@ public class Login extends JFrame {
 		contentPane.add(lblUtente, gbc_lblUtente);
 		
 		tf_utente = new JTextField();
+		tf_utente.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+					btnLogin.doClick();
+			}
+		});
 		GridBagConstraints gbc_tf_utente = new GridBagConstraints();
 		gbc_tf_utente.insets = new Insets(0, 0, 5, 5);
 		gbc_tf_utente.fill = GridBagConstraints.HORIZONTAL;
@@ -119,6 +128,13 @@ public class Login extends JFrame {
 		});
 		
 		tf_pass = new JPasswordField();
+		tf_pass.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+					btnLogin.doClick();
+			}
+		});
 		GridBagConstraints gbc_tf_pass = new GridBagConstraints();
 		gbc_tf_pass.insets = new Insets(0, 0, 5, 5);
 		gbc_tf_pass.fill = GridBagConstraints.HORIZONTAL;
