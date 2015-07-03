@@ -206,11 +206,13 @@ public class OrariSettimanali extends JFrame {
 					medici = (ElencoMedici) MyFile.loadObject(f_medici, ClinicaMain.MEDICI_FILENAME);
 					
 					// Reset delle Visite
-					ElencoVisite visite = null;
-					visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
-					for(int i=0; i<visite.elencoVisite.size(); i++){
-						if(visite.elencoVisite.get(i).getStato().equals(ClinicaMain.PRENOTATA) && visite.elencoVisite.get(i).getMedico().equals(m))
-							visite.elencoVisite.remove(i);
+					if(f_visite.exists()){
+						ElencoVisite visite = null;
+						visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
+						for(int i=0; i<visite.elencoVisite.size(); i++){
+							if(visite.elencoVisite.get(i).getStato().equals(ClinicaMain.PRENOTATA) && visite.elencoVisite.get(i).getMedico().equals(m))
+								visite.elencoVisite.remove(i);
+						}
 					}
 					
 					// Aggiornamento Medico

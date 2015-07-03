@@ -1,5 +1,6 @@
 package ed3sign.uni.fp.utility;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.io.File;
@@ -79,8 +80,12 @@ public class CodiceFiscale {
   public int getAnnoInserito() {
     return anno;
   }
-  public int getGiorno() {
-    return (sesso.equals("Maschio")) ? giorno : (giorno+40);
+  public String getGiorno() {
+    int day = (sesso.equals("Maschio")) ? giorno : (giorno+40);
+    DecimalFormat formatter = new DecimalFormat("00");
+    String day_format = formatter.format(day);
+	System.out.println(day_format);
+	return day_format;
   }
   public int getGiornoInserito() {
     return giorno;
@@ -206,7 +211,6 @@ public class CodiceFiscale {
           cc = s1.substring(s1.lastIndexOf(' ')+1);
         }
       }
-      
       scanner.close();
     } catch(Exception e) {e.printStackTrace();}
     return cc;

@@ -27,6 +27,7 @@ public class NuovoReferto extends JFrame {
 	protected JTextArea ta_prescrizione;
 	protected static NuovoReferto frame;
 	File f_utenti = new File(ClinicaMain.UTENTI_FILENAME);
+	File f_visite = new File(ClinicaMain.VISITE_FILENAME);
 	
 	/**
 	 * Launch the application.
@@ -141,6 +142,12 @@ public class NuovoReferto extends JFrame {
 				int choice = 0;
 				Referto newReferto;
 				
+				// Caricamento Visite
+				ElencoVisite visite = null;
+				if(f_visite.exists()){
+					visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
+				}
+				
 				if(ta_rapporto.getText().equals(""))
 					JOptionPane.showMessageDialog(contentPane, "Compilare il rapporto prima di continuare.", "Errore", JOptionPane.WARNING_MESSAGE);
 				else if(ta_prescrizione.getText().equals("")){
@@ -148,15 +155,29 @@ public class NuovoReferto extends JFrame {
 					if(choice == JOptionPane.YES_OPTION){
 						newReferto = new Referto(v, ta_rapporto.getText(), ta_prescrizione.getText());
 						newReferto.aggiungiReferto(newReferto);
+						
+						// Aggiornamento Stato Visita
+						for(Visita va : visite.elencoVisite){
+							if(va.getData().equals(v.getData())){
+								va.setStato(ClinicaMain.ARCHIVIATA);
+								MyFile.saveObject(f_visite, visite, ClinicaMain.VISITE_FILENAME);
+							}
+						}
 						JOptionPane.showMessageDialog(contentPane, "Referto aggiunto con successo. Visita Archiviata", "Operazione Completata", JOptionPane.INFORMATION_MESSAGE);
-						v.setStato(ClinicaMain.ARCHIVIATA);
 					}
 				}
 				else{
 					newReferto = new Referto(v, ta_rapporto.getText(), ta_prescrizione.getText());
 					newReferto.aggiungiReferto(newReferto);
 					JOptionPane.showMessageDialog(contentPane, "Referto aggiunto con successo. Visita Archiviata", "Operazione Completata", JOptionPane.INFORMATION_MESSAGE);
-					v.setStato(ClinicaMain.ARCHIVIATA);
+					
+					// Aggiornamento Stato Visita
+					for(Visita va : visite.elencoVisite){
+						if(va.getData().equals(v.getData())){
+							va.setStato(ClinicaMain.ARCHIVIATA);
+							MyFile.saveObject(f_visite, visite, ClinicaMain.VISITE_FILENAME);
+						}
+					}
 				}
 			}
 		});

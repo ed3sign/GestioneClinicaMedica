@@ -1,6 +1,5 @@
 package ed3sign.uni.fp.clinica;
 
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -13,8 +12,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.Date;
 
@@ -58,8 +55,9 @@ public class VisualizzaVisite extends JFrame {
 	private JComboBox<String> cb_tipo;
 	private JSeparator separator;
 	private JSeparator separator_1;
-	private Button button;
 	private JButton btnNewButton;
+	private JButton btnFiltra;
+	private JButton btnAzzeraFiltri;
 	
 	
 
@@ -145,15 +143,6 @@ public class VisualizzaVisite extends JFrame {
 				cb_medico.addItem(m.getAlbo() + " - " +m.getCognome()+ " ("+m.getTipologia()+")");
 		}
 		
-		// Filtro Medico
-		cb_medico.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				if(table != null){
-					loadTable();
-				}
-			}
-		});
-		
 		lblData = new JLabel("Data");
 		GridBagConstraints gbc_lblData = new GridBagConstraints();
 		gbc_lblData.anchor = GridBagConstraints.EAST;
@@ -170,32 +159,17 @@ public class VisualizzaVisite extends JFrame {
 		gbc_dateChooser.gridy = 2;
 		contentPane.add(dateChooser, gbc_dateChooser);
 		
-		// Detect Date Change
-		dateChooser.getDateEditor().addPropertyChangeListener(
-	    new PropertyChangeListener() {
-	        @Override
-	        public void propertyChange(PropertyChangeEvent e) {
-	            if ("date".equals(e.getPropertyName())) {
-	                loadTable();
-	            }
-	        }
-	    });
-		
-		button = new Button("Azzera Filtri");
-		button.addActionListener(new ActionListener() {
+		btnFiltra = new JButton("Filtra");
+		btnFiltra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cb_medico.setSelectedIndex(0);
-				cb_paziente.setSelectedIndex(0);
-				dateChooser.setDate(null);
-				cb_tipo.setSelectedIndex(0);
+				loadTable();
 			}
 		});
-		GridBagConstraints gbc_button = new GridBagConstraints();
-		gbc_button.gridheight = 2;
-		gbc_button.insets = new Insets(0, 0, 5, 5);
-		gbc_button.gridx = 8;
-		gbc_button.gridy = 2;
-		contentPane.add(button, gbc_button);
+		GridBagConstraints gbc_btnFiltra = new GridBagConstraints();
+		gbc_btnFiltra.insets = new Insets(0, 0, 5, 5);
+		gbc_btnFiltra.gridx = 8;
+		gbc_btnFiltra.gridy = 2;
+		contentPane.add(btnFiltra, gbc_btnFiltra);
 		
 		lblPaziente = new JLabel("Paziente");
 		GridBagConstraints gbc_lblPaziente = new GridBagConstraints();
@@ -222,16 +196,6 @@ public class VisualizzaVisite extends JFrame {
 				cb_paziente.addItem(u.getNome() + " " +u.getCognome()+ " "+ " - "+u.getCodFiscale());
 		}
 		
-		// Filtro Pazienti
-		cb_paziente.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				if(table != null){
-					loadTable();
-				}
-			}
-		});
-		
-		
 		lblTipo = new JLabel("Tipo");
 		GridBagConstraints gbc_lblTipo = new GridBagConstraints();
 		gbc_lblTipo.anchor = GridBagConstraints.EAST;
@@ -253,14 +217,21 @@ public class VisualizzaVisite extends JFrame {
 		cb_tipo.addItem(ClinicaMain.GENERICA);
 		cb_tipo.addItem(ClinicaMain.SPECIALISTICA);
 		
-		// Filtro Tipo
-		cb_tipo.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				if(table != null){
-					loadTable();
-				}
+		btnAzzeraFiltri = new JButton("Azzera Filtri");
+		btnAzzeraFiltri.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cb_medico.setSelectedIndex(0);
+				cb_paziente.setSelectedIndex(0);
+				dateChooser.setDate(null);
+				cb_tipo.setSelectedIndex(0);
+				loadTable();
 			}
 		});
+		GridBagConstraints gbc_btnAzzeraFiltri = new GridBagConstraints();
+		gbc_btnAzzeraFiltri.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAzzeraFiltri.gridx = 8;
+		gbc_btnAzzeraFiltri.gridy = 3;
+		contentPane.add(btnAzzeraFiltri, gbc_btnAzzeraFiltri);
 		
 		separator_1 = new JSeparator();
 		GridBagConstraints gbc_separator_1 = new GridBagConstraints();
@@ -271,7 +242,7 @@ public class VisualizzaVisite extends JFrame {
 		
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane.gridwidth = 10;
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
@@ -347,6 +318,10 @@ public class VisualizzaVisite extends JFrame {
 	public void loadTable(){
 		checkVisite();
 		removeAllRows(model);
+		int cb_medico_index = cb_medico.getSelectedIndex();
+		int cb_paziente_index = cb_paziente.getSelectedIndex();
+		int cb_tipo_index = cb_tipo.getSelectedIndex();
+		Date date_initial = dateChooser.getDate();
 		
 		if(f_visite.exists()){
 			ElencoVisite visite = null;
@@ -355,11 +330,18 @@ public class VisualizzaVisite extends JFrame {
 			String codAlbo  = "";
 			String codFiscale = "";
 			
+			System.out.println("Combobox: "+cb_medico_index + cb_paziente_index + cb_tipo_index);
+			System.out.println("Dimensione Lista: "+visite.elencoVisite.size());
+			
+			for(Visita v : visite.elencoVisite){
+				int index = 0;
+				System.out.println(index + " Medico: "+v.getMedico().getAlbo() + " Paziente: "+v.getPaziente().getCodFiscale()+ "  - "+v.getData() + " "+v.getStato());
+				index++;
+			}
+			
 			for(Visita v : visite.elencoVisite){
 				String data_visita = null;
-				
-				System.out.println("Medico: "+v.getMedico().getAlbo() + " Paziente: "+v.getPaziente().getCodFiscale()+ "  - "+v.getData());
-				
+					
 				// Annulla filtro medico
 				if(cb_medico.getSelectedIndex() == 0 ){
 					for(int i=0; i<cb_medico.getItemCount(); i++){
@@ -393,8 +375,9 @@ public class VisualizzaVisite extends JFrame {
 				}
 				
 				// Annulla filtro data
-				if(dateChooser.getDate() == null)
+				if(dateChooser.getDate() == null){
 					dateChooser.setDate(v.getData());
+				}
 				
 				// Get Selected Codice Albo From Combobox
 				String med1 = (String) cb_medico.getSelectedItem();
@@ -408,7 +391,7 @@ public class VisualizzaVisite extends JFrame {
 				// Filter
 				if(v.getMedico().getAlbo().equals(codAlbo)
 						&& v.getPaziente().getCodFiscale().equals(codFiscale)
-						&& v.getData().equals(dateChooser.getDate())
+						&& MyUtil.compareDateOnly(dateChooser.getDate(), v.getData())
 						&& v.getTipo().equals(cb_tipo.getSelectedItem().toString())){
 						
 						data_visita = MyUtil.timeDateFormat(v.getData()) + " "+ MyUtil.timeIntervalFormat(v.getData());
@@ -420,8 +403,23 @@ public class VisualizzaVisite extends JFrame {
 						Object data[] = {data_visita, medico, paziente, stato, tipo, motivo};
 						model.addRow(data);
 				}
+				
+				if(cb_medico_index == 0 && cb_paziente_index == 0 && cb_tipo_index == 0 && date_initial == null){
+					cb_medico.setSelectedIndex(0);
+					cb_paziente.setSelectedIndex(0);
+					cb_tipo.setSelectedIndex(0);
+					dateChooser.setDate(null);
+				}
+				else{
+					cb_medico.setSelectedIndex(cb_medico_index);
+					cb_paziente.setSelectedIndex(cb_paziente_index);
+					cb_tipo.setSelectedIndex(cb_tipo_index);
+					dateChooser.setDate(date_initial);
+				}
 			}
+			
 		}
+		
 	}
 	
 	/**
@@ -429,14 +427,11 @@ public class VisualizzaVisite extends JFrame {
 	 */
 	public void checkVisite(){
 		Date current_date = MyUtil.getCurrentTime();
-		System.out.println("Current Date: "+current_date);
 		ElencoVisite visite = null;
 		if(f_visite.exists()){
 			visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
 			for(Visita v : visite.elencoVisite){
-				System.out.println("Visita Data: "+v.getData());
 				if(v.getData().before(current_date)){
-					System.out.println("Swag");
 					v.setStato(ClinicaMain.CONCLUSA);
 					MyFile.saveObject(f_visite, visite, ClinicaMain.VISITE_FILENAME);
 				}

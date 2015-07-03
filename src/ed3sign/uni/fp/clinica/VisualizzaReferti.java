@@ -107,7 +107,7 @@ public class VisualizzaReferti extends JFrame {
 		separator = new JSeparator();
 		GridBagConstraints gbc_separator = new GridBagConstraints();
 		gbc_separator.fill = GridBagConstraints.HORIZONTAL;
-		gbc_separator.gridwidth = 4;
+		gbc_separator.gridwidth = 6;
 		gbc_separator.insets = new Insets(0, 0, 5, 5);
 		gbc_separator.gridx = 0;
 		gbc_separator.gridy = 1;

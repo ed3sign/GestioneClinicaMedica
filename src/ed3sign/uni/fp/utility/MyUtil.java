@@ -11,8 +11,6 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.joda.time.LocalTime;
-
 import ed3sign.uni.fp.clinica.OrariSettimanali;
 
 //Classe proposta dal professore durante le lezioni, copiata e modificata
@@ -295,9 +293,6 @@ public class MyUtil {
 		String s_date = date.substring(0,date.indexOf(' ')); 
 		String s_time = date.substring(date.indexOf(' '), date.indexOf(' ')+6);
 		
-		System.out.println("String date "+s_date);
-		System.out.println("String time: "+s_time);
-		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 		Date calDate = null;
 		
@@ -315,6 +310,37 @@ public class MyUtil {
 		return output;
 		
 	}
+	
+	/* Compare Date Only */
+	public static boolean compareDateOnly(Date date1, Date date2) {
+		System.out.println(date1);
+		System.out.println(date2);
+		
+		// Construct date and time objects
+		Calendar cal1 = Calendar.getInstance();
+		cal1.setTime(date1);
+		Calendar cal2 = Calendar.getInstance();
+		cal2.setTime(date2);
+		
+		cal1.set(Calendar.HOUR_OF_DAY, 0);
+		cal1.set(Calendar.MINUTE, 0);
+		cal1.set(Calendar.SECOND, 0);
+		cal1.set(Calendar.MILLISECOND, 0);
+		
+		cal2.set(Calendar.HOUR_OF_DAY, 0);
+		cal2.set(Calendar.MINUTE, 0);
+		cal2.set(Calendar.SECOND, 0);
+		cal2.set(Calendar.MILLISECOND, 0);
+		
+		System.out.println(cal1.getTime());
+		System.out.println(cal2.getTime());
+		
+		if(cal1.getTime().equals(cal2.getTime()))
+			return true;
+		
+		return false;
+	}
+		
 	
 	
 	/* Get Hours Based on Index */
@@ -358,7 +384,6 @@ public class MyUtil {
 		Calendar day = new GregorianCalendar();
 		day.setTime(date);
 		int col = day.get(Calendar.DAY_OF_WEEK);
-		System.out.println("Numero giorno: "+ col);
 		return col;
 	}
 }

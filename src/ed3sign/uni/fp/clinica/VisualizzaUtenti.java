@@ -78,9 +78,9 @@ public class VisualizzaUtenti extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{806, 0};
-		gbl_contentPane.rowHeights = new int[]{45, 205, 0};
+		gbl_contentPane.rowHeights = new int[]{45, 0, 205, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		
@@ -98,7 +98,7 @@ public class VisualizzaUtenti extends JFrame {
 		GridBagConstraints gbc_splitPane = new GridBagConstraints();
 		gbc_splitPane.fill = GridBagConstraints.BOTH;
 		gbc_splitPane.gridx = 0;
-		gbc_splitPane.gridy = 1;
+		gbc_splitPane.gridy = 2;
 		contentPane.add(splitPane, gbc_splitPane);
 		
 		panel = new JPanel();

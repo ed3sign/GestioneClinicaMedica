@@ -213,7 +213,6 @@ public class NuovoUtente extends JFrame{
 		tf_telefono.setText("3334565789");
 		
 		
-		// Sesso
 		lblCodiceFiscale = new JLabel("Cod. Fiscale");
 		GridBagConstraints gbc_lblCodiceFiscale = new GridBagConstraints();
 		gbc_lblCodiceFiscale.anchor = GridBagConstraints.WEST;
@@ -271,11 +270,6 @@ public class NuovoUtente extends JFrame{
 		gbc_lblSesso.gridy = 9;
 		contentPane.add(lblSesso, gbc_lblSesso);
 		
-		
-		/**
-		 * Pulsate Aggiungi
-		 * Evento: Click
-		 */
 		cb_sesso = new JComboBox<String>();
 		cb_sesso.addItem("Maschio");
 		cb_sesso.addItem("Femmina");
@@ -286,6 +280,8 @@ public class NuovoUtente extends JFrame{
 		gbc_cb_sesso.gridx = 2;
 		gbc_cb_sesso.gridy = 9;
 		contentPane.add(cb_sesso, gbc_cb_sesso);
+		
+		
 		button = new JButton("Aggiungi");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
