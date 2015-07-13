@@ -33,6 +33,14 @@ import com.toedter.calendar.JDateChooser;
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
 
+/**
+ * Classe VisualizzaReferti
+ * Classe di visualizzazione dei referti presenti in archivio.
+ * Possibilità di filtrare per medico, paziente e data.
+ * 
+ * @author ed3sign
+ *
+ */
 public class VisualizzaReferti extends JFrame {
 	private static final long serialVersionUID = 1L;
 	protected JPanel contentPane;

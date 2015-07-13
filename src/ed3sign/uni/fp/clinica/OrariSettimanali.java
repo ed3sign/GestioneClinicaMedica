@@ -38,6 +38,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Classe OrariSettimanali
+ * Classe per la gestione degli orari settimanali del medico.
+ * @author ed3sign
+ *
+ */
 public class OrariSettimanali extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -114,6 +120,11 @@ public class OrariSettimanali extends JFrame {
 		table = new JTable();
 		table.addKeyListener(new KeyAdapter() {
 			@Override
+			/**
+			 * Pressione tasto ENTER
+			 * Selezionando gli orari desiderati e premendo il tasto ENTER viene
+			 * impostata la disponibilità del medico per quegli orari.
+			 */
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER){
                     if(table.getSelectedColumnCount() > 0){
@@ -126,6 +137,10 @@ public class OrariSettimanali extends JFrame {
                     }
                 }
 				
+				/**
+				 * Premendo invece il tasto SHIFT, si annulla la disponibilità 
+				 * per la selezione corrente.
+				 */
 				if(e.getKeyCode() == KeyEvent.VK_SHIFT){
 					if(table.getSelectedColumnCount() > 0){
                     	int selected_rows[] = table.getSelectedRows();
@@ -144,7 +159,7 @@ public class OrariSettimanali extends JFrame {
 		table.setCellEditor(null);
 		scrollPane.setViewportView(table);
 		
-		// Header Tabella
+		// Header Tabella con i giorni della settimana
 		String col[] = {"","Lun","Mar","Mer", "Gio", "Ven"};
 		DefaultTableModel model = new DefaultTableModel(col, 0);
 		table.setModel(model);
@@ -170,6 +185,11 @@ public class OrariSettimanali extends JFrame {
 		gbc_btnSalva.gridx = 0;
 		gbc_btnSalva.gridy = 2;
 		
+		/**
+		 * Salva Orari (evento sul pulsante Salva)
+		 * L'aggiornamento degli orari di visita comporterà un annullamento
+		 * di tutte le visite in stato di prenotazione.
+		 */
 		btnSalva = new JButton("Salva");
 		btnSalva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

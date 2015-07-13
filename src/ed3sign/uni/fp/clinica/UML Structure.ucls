@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.8" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="ed3sign.uni.fp.clinica.PrenotaVisita" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/PrenotaVisita.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="188" width="251" x="681" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="ed3sign.uni.fp.clinica.ElencoVisite" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/ElencoVisite.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="152" width="184" x="2573" y="664"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="ed3sign.uni.fp.clinica.Visita" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/Visita.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="458" width="277" x="2685" y="982"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="ed3sign.uni.fp.clinica.VisualizzaMedici" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/VisualizzaMedici.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="332" width="250" x="982" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="ed3sign.uni.fp.clinica.VisualizzaVisite" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/VisualizzaVisite.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="566" width="250" x="1272" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="ed3sign.uni.fp.clinica.ClinicaMain" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/ClinicaMain.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="530" width="188" x="2240" y="1480"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="ed3sign.uni.fp.clinica.ElencoMedici" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/ElencoMedici.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="152" width="196" x="2468" y="1480"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="ed3sign.uni.fp.clinica.VisualizzaUtenti" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/VisualizzaUtenti.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="386" width="250" x="1562" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="ed3sign.uni.fp.clinica.NuovoReferto" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/NuovoReferto.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="206" width="251" x="1852" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="ed3sign.uni.fp.clinica.OrariSettimanali" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/OrariSettimanali.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="386" width="314" x="2153" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="ed3sign.uni.fp.clinica.VisualizzaReferti" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/VisualizzaReferti.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="476" width="250" x="2507" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="ed3sign.uni.fp.clinica.NuovoMedico" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/NuovoMedico.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="530" width="231" x="3033" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="ed3sign.uni.fp.clinica.ElencoReferti" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/ElencoReferti.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="152" width="196" x="2797" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="ed3sign.uni.fp.clinica.Medico" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/Medico.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="494" width="547" x="2685" y="2086"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="ed3sign.uni.fp.clinica.Login" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/Login.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="224" width="295" x="3304" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="ed3sign.uni.fp.clinica.Referto" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/Referto.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="278" width="188" x="2797" y="664"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="ed3sign.uni.fp.clinica.NuovoUtente" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/NuovoUtente.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="476" width="231" x="3639" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="ed3sign.uni.fp.clinica.ElencoUtenti" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/ElencoUtenti.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="152" width="188" x="3002" y="982"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="ed3sign.uni.fp.clinica.NuovaVisita" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/NuovaVisita.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="404" width="314" x="3910" y="58"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="ed3sign.uni.fp.clinica.Utente" project="GestioneClinicaMedica" 
+    file="/GestioneClinicaMedica/src/ed3sign/uni/fp/clinica/Utente.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="566" width="306" x="2725" y="1480"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="21">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="22" name="visita"/>      
+      <multiplicity id="23" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="24">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="20"/>  
+  </generalization>  
+  <association id="25">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="26" name="paziente"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="28">    
+    <bendpoint x="2694" y="1480"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="29" name="medico"/>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="31">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="32" name="elencoReferti"/>      
+      <multiplicity id="33" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="34">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="35" name="elencoVisite"/>      
+      <multiplicity id="36" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="37">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="38" name="loggedin"/>      
+      <multiplicity id="39" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="40">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="41" name="frame"/>      
+      <multiplicity id="42" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="43">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="44" name="elencoUtenti"/>      
+      <multiplicity id="45" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="46">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="47" name="elencoMedici"/>      
+      <multiplicity id="48" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="49">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="50" name="frame"/>      
+      <multiplicity id="51" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

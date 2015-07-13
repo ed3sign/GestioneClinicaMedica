@@ -6,6 +6,15 @@ import java.util.Date;
 
 import ed3sign.uni.fp.utility.MyFile;
 
+/**
+ * Classe Visita
+ * Modello di visita semplificato, avente come attributi il
+ * medico, il paziente, data/ora di visita, lo stato (PRENOTATA, CONCLUSA, ARCHIVIATA),
+ * il tipo (GENERICA o SPECIALISTICA) e la descrizione dei sintomi o dei motivi di essa.
+ * 
+ * @author ed3sign
+ *
+ */
 public class Visita implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Medico medico;

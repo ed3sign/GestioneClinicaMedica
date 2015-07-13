@@ -5,6 +5,16 @@ import java.io.Serializable;
 
 import ed3sign.uni.fp.utility.MyFile;
 
+/**
+ * Classe Referto
+ * Modello semplificato del referto Medico, contenente le informazioni
+ * relative alla visita, un campo rapporto generico ed una prescrizione
+ * opzionale consigliata per il paziente.
+ * 
+ * Il salvataggio avviene sul file tramite la classe ElencoReferti.
+ * @author ed3sign
+ *
+ */
 public class Referto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Visita visita;

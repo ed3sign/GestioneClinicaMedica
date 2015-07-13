@@ -22,6 +22,20 @@ import javax.swing.border.EmptyBorder;
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
 
+/**
+ * Classe PrenotaVisita
+ * Frame GUI per l'aggiunta di una nuova visita.
+ * Gli orari del medico vengono caricati in una tabella
+ * di disponibilità. Il medico viene impostato
+ * automaticamente in base all'utente loggato, mentre
+ * andranno invece compilati i campi che riguardano il nome
+ * del paziente, il tipo di visita (Generica o Specialistica)
+ * e il motivo con eventuali sintomi mostrati dal paziente.
+ * 
+ * NOTA: questa funzione richiede il login dell'utente.
+ * @author ed3sign
+ *
+ */
 public class PrenotaVisita extends JFrame {
 	
 	private static final long serialVersionUID = 1L;

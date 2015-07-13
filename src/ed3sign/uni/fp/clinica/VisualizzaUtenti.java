@@ -36,6 +36,14 @@ import ed3sign.uni.fp.utility.InterfaceHelpers;
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
 
+/**
+ * Classe VisualizzaUtenti
+ * Classe di visualizzazione dell'elenco degli utenti, responsabile
+ * anche dell'aggiornamento (modifica del dati) e eliminazione.
+ * 
+ * @author ed3sign
+ *
+ */
 public class VisualizzaUtenti extends JFrame {
 	private static final long serialVersionUID = 1L;
 	protected JPanel panel;

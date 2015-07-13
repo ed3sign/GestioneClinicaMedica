@@ -7,6 +7,17 @@ import java.util.HashMap;
 
 import ed3sign.uni.fp.utility.MyFile;
 
+/**
+ * Classe Medico
+ * Medico della clinica, estensione della classe Utente normale.
+ * Il medico rispetto all'utente normale presenta attributi e metodi specifici,
+ * come il codice di albo, la tipologia (Generico o Specialista) e le rispettive
+ * aree di competenza.
+ * Per la gestione della prenotazione delle visite, il medico presenta una Hashmap
+ * contenente i suoi orari settimanali.
+ * @author ed3sign
+ *
+ */
 public class Medico extends Utente{
 	private static final long serialVersionUID = 1L;
 	private String user;
@@ -46,6 +57,12 @@ public class Medico extends Utente{
 		this.orariSettimanali = new HashMap<Integer, ArrayList<Date>>();
 	}
 	
+	/**
+	 * Metodo Aggiungi Medico
+	 * @param newMedico medico da aggiungere
+	 * Se il file d'archivio medici è già esistente, esso viene aggiornato.
+	 * In caso contrario viene creato un nuovo file.
+	 */
 	public void aggiungiMedico(Medico newMedico) {
 		ElencoMedici elencoMedici = null;
 		

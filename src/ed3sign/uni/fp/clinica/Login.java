@@ -127,6 +127,7 @@ public class Login extends JFrame {
 						// Login Check
 						checkLogin(medici.elencoMedici, utente, pass);
 					}
+					// Utente non presente negli archivi
 					else
 						JOptionPane.showMessageDialog(contentPane, "Nessun utente presente nei nostri archivi!", "Errore", JOptionPane.WARNING_MESSAGE);
 				}
@@ -158,6 +159,10 @@ public class Login extends JFrame {
 	
 	/**
 	 * Login Check
+	 * Controlla i dati inseriti dall'utente nell'apposito form,
+	 * verificando l'esistenza di un match nell'archivio salvato su file.
+	 * Se il login avviene con successo, viene abilitato a true il medico nella hashmap del metodo principale.
+	 * In caso contrario viene semplicemente visualizzato un messaggio d'errore.
 	 * @param list lista degli utenti
 	 * @param user nome utente inserito
 	 * @param pass password inserita

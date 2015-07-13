@@ -20,6 +20,16 @@ import javax.swing.border.EmptyBorder;
 
 import ed3sign.uni.fp.utility.MyFile;
 
+/**
+ * Classe NuovoReferto
+ * Classe per la creazione di un nuovo referto.
+ * Form accessibile solo dall'elenco visite, dove
+ * è possibile selezionare una visita conclusa e
+ * decidere di aggiungere il relativo referto con
+ * un'eventuale prescrizione per il paziente.
+ * @author ed3sign
+ *
+ */
 public class NuovoReferto extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
@@ -47,8 +57,8 @@ public class NuovoReferto extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @param giorno_visita 
-	 * @param m 
+	 * @param giorno_visita giorno della visita (dal frame ElencoVisite)
+	 * @param m medico responsabile della visita, quindi del referto
 	 */
 	public NuovoReferto(Visita v) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -136,6 +146,9 @@ public class NuovoReferto extends JFrame {
 		gbc_ta_prescrizione.gridy = 11;
 		contentPane.add(ta_prescrizione, gbc_ta_prescrizione);
 		
+		/**
+		 * Aggiungi Referto (evento click sul tasto conferma)
+		 */
 		JButton btnConferma = new JButton("Conferma");
 		btnConferma.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

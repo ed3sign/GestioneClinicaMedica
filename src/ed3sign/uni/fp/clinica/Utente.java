@@ -6,6 +6,12 @@ import java.util.Date;
 
 import ed3sign.uni.fp.utility.MyFile;
 
+/**
+ * Classe Utente
+ * Modello utente/paziente, con dati anagrafici standard.
+ * @author ed3sign
+ *
+ */
 public class Utente implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private boolean loggedin = false;

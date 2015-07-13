@@ -43,6 +43,14 @@ import ed3sign.uni.fp.utility.InterfaceHelpers;
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
 
+/**
+ * Classe VisualizzaMedici
+ * Classe di visualizzazione dell'elenco medici, responsabile
+ * anche dell'aggiornamento (modifica del dati) e eliminazione.
+ * 
+ * @author ed3sign
+ *
+ */
 public class VisualizzaMedici extends JFrame {
 	private static final long serialVersionUID = 1L;
 	protected JPanel panel;

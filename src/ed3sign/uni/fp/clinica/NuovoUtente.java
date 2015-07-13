@@ -32,6 +32,17 @@ import ed3sign.uni.fp.utility.InterfaceHelpers;
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
 
+/**
+ * Classe NuovoUtente
+ * Classe per l'aggiunta di un nuovo utente normale, o paziente.
+ * I dati richiesti sono esclusivamente di tipo anagrafico, dato
+ * che l'utente generico non possiede le credenziali per accedere
+ * alle sezioni riservate al medico.
+ * Per garantire l'univocità degli utenti in archivio, viene effettuato
+ * un controllo sul codice fiscale.
+ * @author ed3sign
+ *
+ */
 public class NuovoUtente extends JFrame{
 
 	private static final long serialVersionUID = 1L;
@@ -230,6 +241,11 @@ public class NuovoUtente extends JFrame{
 		contentPane.add(tf_codiceFiscale, gbc_tf_codiceFiscale);
 		tf_codiceFiscale.setText("GGGSST95D26H916Y");
 		
+		/**
+		 * Calcolo Automatico del CF (evento sul pulsante Calcola)
+		 * Se l'utente ha già inserito i dati sufficienti, quali Nome, Cognome, Data di Nascita, Sesso e Comune di Nascita, 
+		 * è possibile calcolare automaticamente il codice fiscale, tramite una libreria nel package di utilità (trovata sul web ed integrata nell'applicativo).
+		 */
 		btnCalcola = new JButton("Calcola");
 		btnCalcola.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -282,6 +298,13 @@ public class NuovoUtente extends JFrame{
 		contentPane.add(cb_sesso, gbc_cb_sesso);
 		
 		
+		/**
+		 * Aggiungi Nuovo Utente (evento click sul pulsante Aggiungi)
+		 * Prima di procedere all'inserimento di un utente, vengono effettuati una serie di controlli:
+		 * - Inserimento di tutti i dati richiesti
+		 * - Controllo sul formato del Codice Fiscale
+		 * - Controllo duplicazione utente sulla base del CF
+		 */
 		button = new JButton("Aggiungi");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -331,9 +354,9 @@ public class NuovoUtente extends JFrame{
 				}
 		});
 		GridBagConstraints gbc_button = new GridBagConstraints();
-		gbc_button.gridwidth = 2;
+		gbc_button.gridwidth = 5;
 		gbc_button.insets = new Insets(0, 0, 5, 5);
-		gbc_button.gridx = 1;
+		gbc_button.gridx = 0;
 		gbc_button.gridy = 15;
 		contentPane.add(button, gbc_button);
 	}

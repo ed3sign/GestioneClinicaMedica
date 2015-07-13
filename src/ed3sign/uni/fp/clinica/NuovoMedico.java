@@ -45,6 +45,16 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import com.toedter.calendar.JDateChooser;
 
+/**
+ * Classe NuovoMedico
+ * Classe per la creazione di un nuovo medico. 
+ * Form sostanzialmente identico a quello per l'inserimento
+ * di un nuovo utente semplice, con la differenza di alcuni
+ * nuovi campi relativi al tipo di medico, alla specializzazione
+ * e ai dettagli di accesso quindi username e password.
+ * @author ed3sign
+ *
+ */
 public class NuovoMedico extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
@@ -89,6 +99,10 @@ public class NuovoMedico extends JFrame{
 		});
 	}
 
+	/**
+	 * Metodo Costruttore nuovo Frame
+	 * @throws IOException
+	 */
 	public NuovoMedico() throws IOException {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 640, 510);
@@ -283,6 +297,7 @@ public class NuovoMedico extends JFrame{
 		gbc_lblSesso.gridy = 9;
 		contentPane.add(lblSesso, gbc_lblSesso);
 		
+		// Sesso
 		cb_sesso = new JComboBox<String>();
 		cb_sesso.addItem("Maschio");
 		cb_sesso.addItem("Femmina");
@@ -325,6 +340,7 @@ public class NuovoMedico extends JFrame{
 		gbc_cb_tipologia.gridy = 10;
 		getContentPane().add(cb_tipologia, gbc_cb_tipologia);
 		
+		// Aree di Competenza
 		JLabel lblAreaDiCompetenza = new JLabel("Area di Competenza");
 		GridBagConstraints gbc_lblAreaDiCompetenza = new GridBagConstraints();
 		gbc_lblAreaDiCompetenza.anchor = GridBagConstraints.WEST;
@@ -342,18 +358,15 @@ public class NuovoMedico extends JFrame{
 		gbc_tipo_panel.gridy = 11;
 		getContentPane().add(tipo_panel, gbc_tipo_panel);
 		
+		// Specializzazioni
 		JCheckBox cb_cardiologia = new JCheckBox("Cardiologia");
-		
 		JCheckBox cb_chirurgia = new JCheckBox("Chirurgia");
-		
 		JCheckBox cb_gastroenterologia = new JCheckBox("Gastroenterologia");
 		allCheckBoxes.add(cb_cardiologia);
 		allCheckBoxes.add(cb_chirurgia);
 		allCheckBoxes.add(cb_gastroenterologia);
-		
 		JCheckBox cb_nefrologia = new JCheckBox("Nefrologia");
 		allCheckBoxes.add(cb_nefrologia);
-		
 		JCheckBox cb_ortopedia = new JCheckBox("Ortopedia");
 		allCheckBoxes.add(cb_ortopedia);
 		GroupLayout gl_tipo_panel = new GroupLayout(tipo_panel);
@@ -389,6 +402,7 @@ public class NuovoMedico extends JFrame{
 		);
 		tipo_panel.setLayout(gl_tipo_panel);
 		
+		// Username
 		JLabel lblUser = new JLabel("User");
 		GridBagConstraints gbc_lblUser = new GridBagConstraints();
 		gbc_lblUser.anchor = GridBagConstraints.WEST;
@@ -407,6 +421,7 @@ public class NuovoMedico extends JFrame{
 		getContentPane().add(tf_user, gbc_tf_user);
 		tf_user.setColumns(10);
 		
+		// Password
 		JLabel lblPassword = new JLabel("Password");
 		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
 		gbc_lblPassword.anchor = GridBagConstraints.WEST;
@@ -425,7 +440,7 @@ public class NuovoMedico extends JFrame{
 		getContentPane().add(tf_pass, gbc_tf_pass);
 		
 		/**
-		 * Aggiungi Medico
+		 * Aggiungi Medico (evento click su pulsante)
 		 */
 		button = new JButton("Aggiungi");
 		button.addActionListener(new ActionListener() {

@@ -43,6 +43,20 @@ import com.toedter.calendar.JDateChooser;
 import ed3sign.uni.fp.utility.MyFile;
 import ed3sign.uni.fp.utility.MyUtil;
 
+/**
+ * Classe NuovaVisita
+ * 
+ * Classe per la prenotazione di una nuova visita.
+ * Visualizzazione simile a quella per l'impostazione degli
+ * orari settimanali. 
+ * L'utente visualizza una tabella di orari di disponibilità,
+ * seleziona uno slot di tempo e cliccando sul pulsante prenota
+ * - se la selezione risulta valida - viene indirizzato al frame 
+ * per l'aggiunta di una nuova visita e finalizzare l'operazione.
+ * 
+ * @author ed3sign
+ *
+ */
 public class NuovaVisita extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -204,6 +218,12 @@ public class NuovaVisita extends JFrame {
 		model = new DefaultTableModel(getCurrentWeek(dateChooser), 0);
 		table.setModel(model);
 		
+		/**
+		 * Pulsante di conferma (evento click sul pulsante Prenota)
+		 * Prima di richiamare il frame per l'effettiva conferma di prenotazione,
+		 * viene controllata la validità dell'orario e l'effettiva disponibilità
+		 * del medico.
+		 */
 		JButton btnPrenota = new JButton("Prenota");
 		btnPrenota.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -276,13 +296,14 @@ public class NuovaVisita extends JFrame {
 	
 	/**
 	 * Print Day Hours
+	 * Stampa gli orari settimali delle visite, ad intervalli di 30 minuti.
 	 * @param model table model
 	 */
 	public void printDayHours(DefaultTableModel model){
 	    // Stampa Orari Settimali
 		for(int i=0; i<=OrariSettimanali.TIME_SLOTS; i++){
 			String starting_time = MyUtil.timeHourFormat(cal.getTime());
-			cal.add(Calendar.MINUTE, 30);
+			cal.add(Calendar.MINUTE, OrariSettimanali.TIME_SLOT_DURATION);
 			String ending_time = MyUtil.timeHourFormat(cal.getTime());
 			Object data[] = {starting_time +" - "+ ending_time};
 			model.addRow(data);
@@ -292,6 +313,10 @@ public class NuovaVisita extends JFrame {
 	
 	/**
 	 * Load Table
+	 * Metodo di stampa della tabella.
+	 * Per prima cosa viene controllato il login utente, per consentire l'accesso alla sezione di inserimento.
+	 * Se la verifica avviene con successo, vengono visualizzati gli orari relativi al medico. 
+	 * Gli orari sono tradotti in righe e colonne della tabella tramite dei metodi realizzati nella classe MyUtil.
 	 */
 	public void loadTable(){
 		clearRowContent(table);
@@ -321,6 +346,7 @@ public class NuovaVisita extends JFrame {
 				orariSettimanali = new HashMap<Integer, ArrayList<Date>>();
 			}
 		}
+		// Overwrite della disponibilità del medico con gli orari di visita.
 		printVisite();
 	}
 	
@@ -328,8 +354,12 @@ public class NuovaVisita extends JFrame {
 	
 	/**
 	 * Get Medico From Combobox
+	 * Il medico viene identificato univocamente con il codice albo.
+	 * Prelevando il codice albo dal Combobox, è possibile controllare
+	 * nell'archivio file l'esistenza di un medico che abbia lo stesso
+	 * codice albo.
 	 * @param cb_medico JComboBox con elenco dei medici
-	 * @return Medico medico selezionato
+	 * @return Medico medico selezionato, o null se non esiste
 	 */
 	public Medico getMedico(JComboBox<String> cb_medico){
 		String med = (String) cb_medico.getSelectedItem();
@@ -345,6 +375,9 @@ public class NuovaVisita extends JFrame {
 	
 	/**
 	 * Print Visite
+	 * Stampa nella tabella gli orari di visita già prenotati.
+	 * Le disponibilità della tabella originale vengono quindi sostituite
+	 * nel caso vi sia una visita in quel determinato slot di tempo.
 	 * @param table
 	 */
 	public void printVisite(){
@@ -380,8 +413,6 @@ public class NuovaVisita extends JFrame {
 					try{col_date = MyUtil.revertDayFormatter(tcm.getColumn(col).getHeaderValue().toString());}
 					catch(Exception e){e.printStackTrace();}
 					
-					System.out.print(row + col);
-					
 					if(MyUtil.dateFormatter(col_date).equals(MyUtil.dateFormatter(v.getData())))
 						table.setValueAt(OrariSettimanali.PRENOTATA, row, col);
 				}
@@ -392,6 +423,8 @@ public class NuovaVisita extends JFrame {
 	
 	/**
 	 * Header Tabella Settimana Corrente
+	 * Stampa settimana corrente, a partire da Lunedì.
+	 * La settimana lavorativa del medico parte da Lunedì fino a Venerdì.
 	 */
 	public Object[] getCurrentWeek(JDateChooser date){
 		Calendar now = date.getCalendar();
@@ -408,6 +441,8 @@ public class NuovaVisita extends JFrame {
 	
 	/**
 	 * Header Refresh
+	 * Aggiorna gli header della tabella tramite il TableColumnModel,
+	 * con i giorni e le date della settimana.
 	 */
 	public void headerRefresh(){
 		JTableHeader th = table.getTableHeader();
@@ -421,7 +456,8 @@ public class NuovaVisita extends JFrame {
 	}
 	
 	/**
-	 * Remove all Rows from table
+	 * Clear table
+	 * Azzera il contenuto di tutte le celle della tabella
 	 * @param model table model
 	 */
 	public void clearRowContent(JTable table){
