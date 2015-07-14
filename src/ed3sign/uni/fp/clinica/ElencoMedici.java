@@ -6,6 +6,13 @@ import java.util.ArrayList;
 
 import ed3sign.uni.fp.utility.MyFile;
 
+/**
+ * Classe ElencoMedici
+ * Gestione della lista contenente tutti i medici in archivio
+ * Salvataggio su file
+ * @author Seba
+ *
+ */
 public class ElencoMedici implements Serializable{
 	private static final long serialVersionUID = 1L;
 	ArrayList<Medico> elencoMedici;

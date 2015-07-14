@@ -5,6 +5,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import ed3sign.uni.fp.utility.MyFile;
 
+/**
+ * Classe Elenco Visite
+ * Gestione della lista contenente tutte le liste in archivio
+ * Salvataggio su file
+ * @author Seba
+ *
+ */
 public class ElencoVisite implements Serializable{
 		private static final long serialVersionUID = 1L;
 		ArrayList<Visita> elencoVisite;

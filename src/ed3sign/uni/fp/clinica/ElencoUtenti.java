@@ -6,6 +6,13 @@ import java.util.ArrayList;
 
 import ed3sign.uni.fp.utility.MyFile;
 
+/**
+ * Classe Elenco Utenti
+ * Gestione della lista contenente tutti gli utenti/pazienti in archivio
+ * Salvataggio su file
+ * @author Seba
+ *
+ */
 public class ElencoUtenti implements Serializable{
 	private static final long serialVersionUID = 1L;
 	ArrayList<Utente> elencoUtenti;

@@ -18,6 +18,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Classe Principale ClinicaMain
+ * @author Sebastiano Gaggiano
+ * @version 1.0.0
+ */
 public class ClinicaMain {
 	final static String UTENTI_FILENAME = "utenti.txt";
 	final static String MEDICI_FILENAME = "medici.txt";
@@ -45,17 +50,19 @@ public class ClinicaMain {
 	private JFrame frame;
 	
 	/**
-	 * Launch the application.
+	 * Metodo Principale
+	 * Lancio dell'applicazione
+	 * @param args
 	 */
 	public static void main(String[] args) {
-		// Inizializzazione File
+		// Inizializzazione File Utente e Medico
 		File f_users = new File(UTENTI_FILENAME);
 		File f_medici = new File(MEDICI_FILENAME);
 		boolean successfulLoad = false;
 		ElencoUtenti utenti = null;
 		ElencoMedici medici = null;
 		
-		// Caricamento File, se giï¿½ esistente
+		// Caricamento File, se già esistente
 		if(f_users.exists()){
 			try{
 				utenti = (ElencoUtenti) MyFile.loadObject(f_users, UTENTI_FILENAME);
@@ -73,6 +80,7 @@ public class ClinicaMain {
 		if (!successfulLoad)
 			System.out.println(MSG_NO_FILE);
 		
+		// Creazione ed Apertura della finestra principale
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -103,6 +111,8 @@ public class ClinicaMain {
 		frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
+		
+		// Creazione del Menù di navigazione con relativi sottomenù e voci
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 		
@@ -132,9 +142,6 @@ public class ClinicaMain {
 		menu_aggiungi = new JMenu("Aggiungi");
 		menuBar.add(menu_aggiungi);
 		
-		/**
-		 * Aggiungi Nuovo Utente
-		 */
 		JMenuItem mntmNuovoUtente = new JMenuItem("Nuovo Utente");
 		mntmNuovoUtente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -226,11 +233,14 @@ public class ClinicaMain {
 		JMenu menu_help = new JMenu("Help");
 		menuBar.add(menu_help);
 		
-		// Testing: already logged in
-		//loggedin.put(true, "gianni");
 		checkMenuLogin();
 	}
 	
+	/**
+	 * Metodo di Controllo del Login Utente
+	 * A seconda che l'utente sia loggato o meno,
+	 * alcune funzioni dell'applicativo risultano ad accesso riservato ai medici.
+	 */
 	public static void checkMenuLogin(){
 		if(loggedin.isEmpty()){
 			menu_orari.setVisible(false);

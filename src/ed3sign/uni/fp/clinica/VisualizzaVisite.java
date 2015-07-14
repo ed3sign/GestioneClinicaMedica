@@ -8,8 +8,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
@@ -330,14 +328,12 @@ public class VisualizzaVisite extends JFrame {
 			String codAlbo  = "";
 			String codFiscale = "";
 			
-			System.out.println("Combobox: "+cb_medico_index + cb_paziente_index + cb_tipo_index);
-			System.out.println("Dimensione Lista: "+visite.elencoVisite.size());
-			
+			/*
 			for(Visita v : visite.elencoVisite){
 				int index = 0;
 				System.out.println(index + " Medico: "+v.getMedico().getAlbo() + " Paziente: "+v.getPaziente().getCodFiscale()+ "  - "+v.getData() + " "+v.getStato());
 				index++;
-			}
+			}*/
 			
 			for(Visita v : visite.elencoVisite){
 				String data_visita = null;
@@ -431,7 +427,7 @@ public class VisualizzaVisite extends JFrame {
 		if(f_visite.exists()){
 			visite = (ElencoVisite) MyFile.loadObject(f_visite, ClinicaMain.VISITE_FILENAME);
 			for(Visita v : visite.elencoVisite){
-				if(v.getData().before(current_date)){
+				if(v.getData().before(current_date) && !v.getStato().equals(ClinicaMain.ARCHIVIATA)){
 					v.setStato(ClinicaMain.CONCLUSA);
 					MyFile.saveObject(f_visite, visite, ClinicaMain.VISITE_FILENAME);
 				}

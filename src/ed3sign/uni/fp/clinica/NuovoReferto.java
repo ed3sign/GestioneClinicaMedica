@@ -160,24 +160,25 @@ public class NuovoReferto extends JFrame {
 						for(Visita va : visite.elencoVisite){
 							if(va.getData().equals(v.getData())){
 								va.setStato(ClinicaMain.ARCHIVIATA);
-								MyFile.saveObject(f_visite, visite, ClinicaMain.VISITE_FILENAME);
 							}
 						}
+						MyFile.saveObject(f_visite, visite, ClinicaMain.VISITE_FILENAME);
+						
 						JOptionPane.showMessageDialog(contentPane, "Referto aggiunto con successo. Visita Archiviata", "Operazione Completata", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 				else{
 					newReferto = new Referto(v, ta_rapporto.getText(), ta_prescrizione.getText());
 					newReferto.aggiungiReferto(newReferto);
-					JOptionPane.showMessageDialog(contentPane, "Referto aggiunto con successo. Visita Archiviata", "Operazione Completata", JOptionPane.INFORMATION_MESSAGE);
 					
 					// Aggiornamento Stato Visita
 					for(Visita va : visite.elencoVisite){
 						if(va.getData().equals(v.getData())){
 							va.setStato(ClinicaMain.ARCHIVIATA);
-							MyFile.saveObject(f_visite, visite, ClinicaMain.VISITE_FILENAME);
 						}
 					}
+					MyFile.saveObject(f_visite, visite, ClinicaMain.VISITE_FILENAME);
+					JOptionPane.showMessageDialog(contentPane, "Referto aggiunto con successo. Visita Archiviata", "Operazione Completata", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});

@@ -30,6 +30,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 
+/**
+ * Classe Login
+ * Form di login utente.
+ * @author Seba
+ *
+ */
 public class Login extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
